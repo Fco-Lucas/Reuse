@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    cpf VARCHAR(11),
+    cnpj VARCHAR(14),
+    password VARCHAR NOT NULL,
+    status VARCHAR(12) NOT NULL CHECK (status IN ('ACTIVE', 'INACTIVE')) DEFAULT 'ACTIVE'
+);

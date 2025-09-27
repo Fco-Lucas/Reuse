@@ -1,27 +1,21 @@
 package com.lcsz.reuseplus.dtos.users;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class UserCreateDto {
-    @NotBlank(message = "O campo 'name' é obrigatório")
+public class UserUpdateDto {
     private String name;
     @Size(min = 11, max = 11, message = "O campo 'cpf' deve conter 11 dígitos")
     private String cpf;
     @Size(min = 14, max = 14, message = "O campo 'cnpj' deve conter 14 dígitos")
     private String cnpj;
-    @NotBlank(message = "O campo 'password' é obrigatório")
-    @Size(min = 6, message = "O campo 'password' deve conter ao menos 6 dígitos")
-    private String password;
 
-    public UserCreateDto() {
+    public UserUpdateDto() {
     }
 
-    public UserCreateDto(String name, String cpf, String cnpj, String password) {
+    public UserUpdateDto(String name, String cpf, String cnpj) {
         this.name = name;
         this.cpf = cpf;
         this.cnpj = cnpj;
-        this.password = password;
     }
 
     public String getName() {
@@ -48,21 +42,12 @@ public class UserCreateDto {
         this.cnpj = cnpj;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public String toString() {
-        return "UserCreateDto{" +
+        return "UserUpdateDto{" +
                 "name='" + name + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", cnpj='" + cnpj + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }

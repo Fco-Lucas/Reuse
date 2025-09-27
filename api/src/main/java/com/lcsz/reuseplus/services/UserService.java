@@ -1,7 +1,6 @@
 package com.lcsz.reuseplus.services;
 
-import com.lcsz.reuseplus.dtos.users.UserCreateDto;
-import com.lcsz.reuseplus.dtos.users.UserResponseDto;
+import com.lcsz.reuseplus.dtos.users.*;
 import com.lcsz.reuseplus.enums.users.UserStatus;
 import com.lcsz.reuseplus.exceptions.customExceptions.EntityExistsException;
 import com.lcsz.reuseplus.exceptions.customExceptions.EntityNotFoundException;
@@ -86,5 +85,71 @@ public class UserService {
     public UserResponseDto getByIdDto (UUID id) {
         User user = getById(id);
         return UserMapper.entityToResponse(user);
+    }
+
+    @Transactional(readOnly = false)
+    public UserResponseDto update (UUID id, UserUpdateDto updateDto) {
+        User user = getById(id);
+
+        if (updateDto.getName() != null && !updateDto.getName().equals(user.getName())) user.setName(updateDto.getName());
+
+        UserLoginType userLoginType = UserUtils.getTypeLogin(user.getCpf(), user.getCnpj());
+
+        if (updateDto.getCpf() != null && !updateDto.getCpf().equals(user.getCpf())) {
+            if (!userLoginType.equals(UserLoginType.CPF)) {
+                throw new RuntimeException(String.format("O usuário autenticado possui CNPJ cadastrado, portanto não é possível alterar o CPF para: %s", updateDto.getCpf()));
+            }
+
+            user.setCpf(updateDto.getCpf());
+        }
+
+        if (updateDto.getCnpj() != null && !updateDto.getCnpj().equals(user.getCnpj())) {
+            if (!userLoginType.equals(UserLoginType.CNPJ)) {
+                throw new RuntimeException(String.format("O usuário autenticado possui CPF cadastrado, portanto não é possível alterar o CNPJ para: %s", updateDto.getCnpj()));
+            }
+
+            user.setCnpj(updateDto.getCnpj());
+        }
+
+        User saved = repository.save(user);
+
+        return UserMapper.entityToResponse(saved);
+    }
+
+    @Transactional(readOnly = false)
+    public UserDeleteResponseDto delete (UUID id) {
+        User user = getById(id);
+        user.setStatus(UserStatus.INACTIVE);
+        User saved = repository.save(user);
+        return new UserDeleteResponseDto(true, saved.getId());
+    }
+
+    @Transactional(readOnly = false)
+    public UserResponseDto restore (UUID id) {
+        User user = getById(id);
+        user.setStatus(UserStatus.ACTIVE);
+        User saved = repository.save(user);
+        return UserMapper.entityToResponse(saved);
+    }
+
+    @Transactional(readOnly = false)
+    public void updatePassword (UUID id, UserUpdatePasswordDto updatePasswordDto) {
+        String currentPassword = updatePasswordDto.getCurrentPassword();
+        String newPassword = updatePasswordDto.getNewPassword();
+        String confirmNewPassword = updatePasswordDto.getConfirmNewPassword();
+
+        if (!newPassword.equals(confirmNewPassword)) {
+            throw new RuntimeException("Nova senha não é igual à confirmação da nova senha");
+        }
+
+        User user = getById(id);
+
+        if (!user.getPassword().equals(currentPassword)) {
+            throw new RuntimeException("Senha atual inválida");
+        }
+
+        user.setPassword(newPassword);
+
+        this.repository.save(user);
     }
 }

@@ -1,8 +1,7 @@
 package com.lcsz.reuseplus.controllers;
 
 import com.lcsz.reuseplus.dtos.PageableDto;
-import com.lcsz.reuseplus.dtos.users.UserCreateDto;
-import com.lcsz.reuseplus.dtos.users.UserResponseDto;
+import com.lcsz.reuseplus.dtos.users.*;
 import com.lcsz.reuseplus.enums.users.UserStatus;
 import com.lcsz.reuseplus.mappers.PageableMapper;
 import com.lcsz.reuseplus.services.UserService;
@@ -44,10 +43,44 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> createUser (
+    public ResponseEntity<UserResponseDto> getUserById (
             @PathVariable UUID id
     ) {
         UserResponseDto responseDto = service.getByIdDto(id);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserResponseDto> updateUser (
+        @PathVariable UUID id,
+        @RequestBody @Valid UserUpdateDto updateDto
+    ) {
+        UserResponseDto responseDto = service.update(id, updateDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserDeleteResponseDto> deleteUser (
+        @PathVariable UUID id
+    ) {
+        UserDeleteResponseDto responseDto = service.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @PostMapping("/{id}/restore")
+    public ResponseEntity<UserResponseDto> restoreUser (
+            @PathVariable UUID id
+    ) {
+        UserResponseDto responseDto = service.restore(id);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @PostMapping("/{id}/updatePassword")
+    public ResponseEntity<Void> updateUserPassword (
+        @PathVariable UUID id,
+        @RequestBody @Valid UserUpdatePasswordDto updatePasswordDto
+    ) {
+        service.updatePassword(id, updatePasswordDto);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

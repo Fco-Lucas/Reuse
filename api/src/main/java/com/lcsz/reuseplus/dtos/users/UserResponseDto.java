@@ -8,17 +8,15 @@ public class UserResponseDto {
     private UUID id;
     private String name;
     private String cpf;
-    private String cnpj;
     private UserStatus status;
 
     public UserResponseDto() {
     }
 
-    public UserResponseDto(UUID id, String name, String cpf, String cnpj, UserStatus status) {
+    public UserResponseDto(UUID id, String name, String cpf, UserStatus status) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
-        this.cnpj = cnpj;
         this.status = status;
     }
 
@@ -46,14 +44,6 @@ public class UserResponseDto {
         this.cpf = cpf;
     }
 
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
     public UserStatus getStatus() {
         return status;
     }
@@ -68,7 +58,6 @@ public class UserResponseDto {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", cpf='" + cpf + '\'' +
-                ", cnpj='" + cnpj + '\'' +
                 ", status=" + status +
                 '}';
     }

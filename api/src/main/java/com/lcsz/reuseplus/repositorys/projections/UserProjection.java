@@ -8,6 +8,5 @@ public interface UserProjection {
     UUID getId();
     String getName();
     String getCpf();
-    String getCnpj();
     UserStatus getStatus();
 }

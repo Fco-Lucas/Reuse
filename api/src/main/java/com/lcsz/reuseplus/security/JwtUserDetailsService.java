@@ -25,16 +25,16 @@ public class JwtUserDetailsService implements UserDetailsService {
         if(numericLogin.length() != 11 && numericLogin.length() != 14) throw new BadCredentialsException("Informe um CPF ou CNPJ válido para realizar login");
 
         // Checa se é CPF válido (11 números, com ou sem máscara)
-        if (numericLogin.length() == 11) {
+//        if (numericLogin.length() == 11) {
             User user = userService.existsByCpf(login);
             if(user == null) throw new UsernameNotFoundException("Credenciais inválidas, certifique-se de possuir uma conta com as credenciais fornecidas");
             return new JwtUserDetails(user);
-        }
+//        }
 
         // Se passou até aqui é CNPJ
-        User user = userService.existsByCnpj(login);
-        if(user == null) throw new UsernameNotFoundException("Credenciais inválidas, certifique-se de possuir uma conta com as credenciais fornecidas");
-        return new JwtUserDetails(user);
+//        User user = userService.existsByCnpj(login);
+//        if(user == null) throw new UsernameNotFoundException("Credenciais inválidas, certifique-se de possuir uma conta com as credenciais fornecidas");
+//        return new JwtUserDetails(user);
     }
 
     public JwtToken getTokenAuthenticated(String login) {

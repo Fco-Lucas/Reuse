@@ -19,9 +19,10 @@ public class JwtUserDetails extends User {
     }
 
     private static String resolveSubject(com.lcsz.reuseplus.models.User user) {
-        if (user.getCpf() != null) return user.getCpf();
-        if (user.getCnpj() != null) return user.getCnpj();
-        throw new IllegalArgumentException("Usuário precisa ter CPF ou CNPJ válido");
+//        if (user.getCpf() != null) return user.getCpf();
+//        if (user.getCnpj() != null) return user.getCnpj();
+        return user.getCpf();
+//        throw new IllegalArgumentException("Usuário precisa ter CPF ou CNPJ válido");
     }
 
     public UUID getId() {

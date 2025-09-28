@@ -17,8 +17,6 @@ public class User {
     private String name;
     @Column(nullable = false, length = 11)
     private String cpf;
-    @Column(nullable = false, length = 14)
-    private String cnpj;
     @Column(nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
@@ -28,11 +26,10 @@ public class User {
     public User() {
     }
 
-    public User(UUID id, String name, String cpf, String cnpj, String password, UserStatus status) {
+    public User(UUID id, String name, String cpf,String password, UserStatus status) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
-        this.cnpj = cnpj;
         this.password = password;
         this.status = status;
     }
@@ -59,14 +56,6 @@ public class User {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
     }
 
     public String getPassword() {
@@ -103,7 +92,6 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", cpf='" + cpf + '\'' +
-                ", cnpj='" + cnpj + '\'' +
                 ", password='" + password + '\'' +
                 ", status=" + status +
                 '}';

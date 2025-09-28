@@ -6,16 +6,13 @@ public class UserUpdateDto {
     private String name;
     @Size(min = 11, max = 11, message = "O campo 'cpf' deve conter 11 dígitos")
     private String cpf;
-    @Size(min = 14, max = 14, message = "O campo 'cnpj' deve conter 14 dígitos")
-    private String cnpj;
 
     public UserUpdateDto() {
     }
 
-    public UserUpdateDto(String name, String cpf, String cnpj) {
+    public UserUpdateDto(String name, String cpf) {
         this.name = name;
         this.cpf = cpf;
-        this.cnpj = cnpj;
     }
 
     public String getName() {
@@ -34,20 +31,11 @@ public class UserUpdateDto {
         this.cpf = cpf;
     }
 
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
     @Override
     public String toString() {
         return "UserUpdateDto{" +
                 "name='" + name + '\'' +
                 ", cpf='" + cpf + '\'' +
-                ", cnpj='" + cnpj + '\'' +
                 '}';
     }
 }

@@ -14,18 +14,17 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByCpfAndStatus(String cpf, UserStatus status);
-    Optional<User> findByCnpjAndStatus(String cnpj, UserStatus status);
 
     @Query(value = """
-            SELECT id, name, cpf, cnpj, status FROM users 
+            SELECT id, name, cpf, status FROM users 
             WHERE (COALESCE(:name, '') = '' OR name ILIKE :name)
-                AND (COALESCE(:cpfCnpj, '') = '' OR (cpf ILIKE :cpfCnpj OR cnpj ILIKE :cpfCnpj))
+                AND (COALESCE(:cpf, '') = '' OR cpf ILIKE :cpf)
                 AND (:status IS NULL OR status = :status)
             """, nativeQuery = true)
     Page<UserProjection> getAllPageable(
             Pageable pageable,
             @Param("name") String name,
-            @Param("cpfCnpj") String cpfCnpj,
+            @Param("cpf") String cpf,
             @Param("status") String status
     );
 }

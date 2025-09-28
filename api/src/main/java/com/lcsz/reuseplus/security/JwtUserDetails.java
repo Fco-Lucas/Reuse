@@ -1,5 +1,6 @@
 package com.lcsz.reuseplus.security;
 
+import com.lcsz.reuseplus.models.Restaurant;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -8,25 +9,49 @@ import java.util.UUID;
 
 public class JwtUserDetails extends User {
     private final com.lcsz.reuseplus.models.User user;
+    private final Restaurant restaurant;
+    private final String role;
 
     public JwtUserDetails(com.lcsz.reuseplus.models.User user) {
         super(
-                resolveSubject(user),
+                user.getCpf(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")) // autoridade padrão
+                List.of(new SimpleGrantedAuthority("USER")) // autoridade padrão
         );
         this.user = user;
+        this.restaurant = null;
+        this.role = "USER";
     }
 
-    private static String resolveSubject(com.lcsz.reuseplus.models.User user) {
-//        if (user.getCpf() != null) return user.getCpf();
-//        if (user.getCnpj() != null) return user.getCnpj();
-        return user.getCpf();
-//        throw new IllegalArgumentException("Usuário precisa ter CPF ou CNPJ válido");
+    public JwtUserDetails(Restaurant restaurant) {
+        super(
+                restaurant.getCnpj(),
+                restaurant.getPassword(),
+                List.of(new SimpleGrantedAuthority("RESTAURANT")) // autoridade padrão
+        );
+        this.restaurant = restaurant;
+        this.user = null;
+        this.role = "RESTAURANT";
     }
 
     public UUID getId() {
-        return user.getId();
+        return user != null ? user.getId() : restaurant.getId();
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public boolean isUser() {
+        return user != null;
+    }
+
+    public boolean isRestaurant() {
+        return restaurant != null;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
     public com.lcsz.reuseplus.models.User getUser() {

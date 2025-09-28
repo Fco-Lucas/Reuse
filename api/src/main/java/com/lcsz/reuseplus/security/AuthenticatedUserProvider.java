@@ -1,7 +1,10 @@
 package com.lcsz.reuseplus.security;
 
+import com.lcsz.reuseplus.models.Restaurant;
 import com.lcsz.reuseplus.models.User;
+import com.lcsz.reuseplus.services.RestaurantService;
 import com.lcsz.reuseplus.services.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -11,9 +14,14 @@ import java.util.UUID;
 @Component
 public class AuthenticatedUserProvider {
     private final UserService userService;
+    private final RestaurantService restaurantService;
 
-    public AuthenticatedUserProvider(UserService userService) {
+    public AuthenticatedUserProvider(
+            @Lazy UserService userService,
+            @Lazy RestaurantService restaurantService
+    ) {
         this.userService = userService;
+        this.restaurantService = restaurantService;
     }
 
     // Retorna o usuário autenticado
@@ -38,7 +46,15 @@ public class AuthenticatedUserProvider {
         return getAuthenticatedUser().getId();
     }
 
+    public String getAuthenticatedUserRole() {
+        return getAuthenticatedUser().getRole();
+    }
+
     public User getAuthenticatedUserEntity () {
         return getAuthenticatedUser().getUser();
+    }
+
+    public Restaurant getAuthenticatedRestaurantEntity () {
+        return getAuthenticatedUser().getRestaurant();
     }
 }

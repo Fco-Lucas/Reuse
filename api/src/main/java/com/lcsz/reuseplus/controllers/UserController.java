@@ -35,10 +35,10 @@ public class UserController {
     public ResponseEntity<PageableDto> getAllUsers (
         Pageable pageable,
         @RequestParam(required = false) String name,
-        @RequestParam(required = false) String cpfCnpj,
-        @RequestParam(required = false)UserStatus status
+        @RequestParam(required = false) String cpf,
+        @RequestParam(required = false) UserStatus status
     ) {
-        Page<UserResponseDto> responseDto = service.getAllPageable(pageable, name, cpfCnpj, status);
+        Page<UserResponseDto> responseDto = service.getAllPageable(pageable, name, cpf, status);
         return ResponseEntity.status(HttpStatus.OK).body(PageableMapper.toDto(responseDto));
     }
 

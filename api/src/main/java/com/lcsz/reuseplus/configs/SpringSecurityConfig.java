@@ -45,6 +45,7 @@ public class SpringSecurityConfig {
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, appBaseUrl + "users").permitAll()
+                        .requestMatchers(HttpMethod.POST, appBaseUrl + "restaurants").permitAll()
                         .requestMatchers(HttpMethod.POST, appBaseUrl + "auth").permitAll()
                         .requestMatchers(HttpMethod.GET,appBaseUrl + "ping").permitAll()
                         .requestMatchers(DOCUMENTATION_OPENAPI).permitAll()

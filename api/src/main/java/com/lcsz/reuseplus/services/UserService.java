@@ -12,6 +12,7 @@ import com.lcsz.reuseplus.utils.UserLoginType;
 import com.lcsz.reuseplus.utils.UserUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,19 +22,21 @@ import java.util.UUID;
 @Service
 public class UserService {
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
-    private Optional<User> existsByCpf (String cpf) {
-        return repository.findByCpfAndStatus(cpf, UserStatus.ACTIVE);
+    public User existsByCpf (String cpf) {
+        return repository.findByCpfAndStatus(cpf, UserStatus.ACTIVE).orElse(null);
     }
 
     @Transactional(readOnly = true)
-    private Optional<User> existsByCnpj (String cnpj) {
-        return repository.findByCnpjAndStatus(cnpj, UserStatus.ACTIVE);
+    public User existsByCnpj (String cnpj) {
+        return repository.findByCnpjAndStatus(cnpj, UserStatus.ACTIVE).orElse(null);
     }
 
     @Transactional(readOnly = false)
@@ -46,13 +49,14 @@ public class UserService {
         String userLoginTypeText = UserUtils.getTypeLoginText(userLoginType);
         String userLoginTypeCredential = UserUtils.getTypeLoginCredential(createDto.getCpf(), createDto.getCnpj());
 
-        Optional<User> existsUser = Optional.empty();
+        User existsUser = null;
         if(userLoginType == UserLoginType.CPF) existsUser = existsByCpf(createDto.getCpf());
         else if(userLoginType == UserLoginType.CNPJ) existsUser = existsByCnpj(createDto.getCnpj());
 
-        if(existsUser.isPresent()) throw new EntityExistsException(String.format("Usuário com %s: %s já cadastrado no sistema", userLoginTypeText, userLoginTypeCredential));
+        if(existsUser != null) throw new EntityExistsException(String.format("Usuário com %s: %s já cadastrado no sistema", userLoginTypeText, userLoginTypeCredential));
 
         User entity = UserMapper.createDtoToEntity(createDto);
+        entity.setPassword(passwordEncoder.encode(createDto.getPassword()));
         User saved = repository.save(entity);
 
         return UserMapper.entityToResponse(saved);
@@ -144,11 +148,11 @@ public class UserService {
 
         User user = getById(id);
 
-        if (!user.getPassword().equals(currentPassword)) {
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new RuntimeException("Senha atual inválida");
         }
 
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
 
         this.repository.save(user);
     }

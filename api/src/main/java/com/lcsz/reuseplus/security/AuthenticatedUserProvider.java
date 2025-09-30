@@ -1,5 +1,6 @@
 package com.lcsz.reuseplus.security;
 
+import com.lcsz.reuseplus.dtos.AuthRole;
 import com.lcsz.reuseplus.models.Restaurant;
 import com.lcsz.reuseplus.models.User;
 import com.lcsz.reuseplus.services.RestaurantService;
@@ -46,7 +47,7 @@ public class AuthenticatedUserProvider {
         return getAuthenticatedUser().getId();
     }
 
-    public String getAuthenticatedUserRole() {
+    public AuthRole getAuthenticatedUserRole() {
         return getAuthenticatedUser().getRole();
     }
 

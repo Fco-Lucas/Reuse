@@ -1,5 +1,6 @@
 package com.lcsz.reuseplus.security;
 
+import com.lcsz.reuseplus.dtos.AuthRole;
 import com.lcsz.reuseplus.models.Restaurant;
 import com.lcsz.reuseplus.models.User;
 import com.lcsz.reuseplus.services.RestaurantService;
@@ -44,7 +45,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public JwtToken getTokenAuthenticated(String login) {
         UserDetails userDetails = loadUserByUsername(login);
         UUID id;
-        String role;
+        AuthRole role;
 
         if (userDetails instanceof JwtUserDetails jwtUserDetails) {
             id = jwtUserDetails.getId();

@@ -2,17 +2,25 @@ package com.lcsz.reuseplus.models;
 
 import com.lcsz.reuseplus.enums.restaurants.RestaurantStatus;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "restaurants")
-public class Restaurant {
+@EntityListeners(AuditingEntityListener.class)
+public class Restaurant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     private UUID id;
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false, length = 14)
@@ -26,8 +34,9 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public Restaurant(UUID id, String name, String cnpj, String password, RestaurantStatus status) {
+    public Restaurant(UUID id, LocalDateTime createdAt, String name, String cnpj, String password, RestaurantStatus status) {
         this.id = id;
+        this.createdAt = createdAt;
         this.name = name;
         this.cnpj = cnpj;
         this.password = password;
@@ -40,6 +49,14 @@ public class Restaurant {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getName() {
@@ -90,6 +107,7 @@ public class Restaurant {
     public String toString() {
         return "Restaurant{" +
                 "id=" + id +
+                ", createdAt='" + createdAt + '\'' +
                 ", name='" + name + '\'' +
                 ", cnpj='" + cnpj + '\'' +
                 ", password='" + password + '\'' +

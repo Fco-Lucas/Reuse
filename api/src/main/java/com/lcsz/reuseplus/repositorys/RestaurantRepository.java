@@ -16,7 +16,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, UUID> {
     Optional<Restaurant> findByCnpjAndStatus(String cnpj, RestaurantStatus status);
 
     @Query(value = """
-            SELECT id, name, cnpj, status FROM restaurants 
+            SELECT id, created_at, name, cnpj, status FROM restaurants 
             WHERE (COALESCE(:name, '') = '' OR name ILIKE :name)
                 AND (COALESCE(:cnpj, '') = '' OR cnpj ILIKE :cnpj)
                 AND (:status IS NULL OR status = :status)

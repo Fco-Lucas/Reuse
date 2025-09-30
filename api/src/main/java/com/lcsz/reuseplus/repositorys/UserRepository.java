@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByCpfAndStatus(String cpf, UserStatus status);
 
     @Query(value = """
-            SELECT id, name, cpf, status FROM users 
+            SELECT id, created_at, name, cpf, status FROM users 
             WHERE (COALESCE(:name, '') = '' OR name ILIKE :name)
                 AND (COALESCE(:cpf, '') = '' OR cpf ILIKE :cpf)
                 AND (:status IS NULL OR status = :status)

@@ -1,5 +1,6 @@
 package com.lcsz.reuseplus.security;
 
+import com.lcsz.reuseplus.dtos.AuthRole;
 import com.lcsz.reuseplus.models.Restaurant;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public class JwtUserDetails extends User {
     private final com.lcsz.reuseplus.models.User user;
     private final Restaurant restaurant;
-    private final String role;
+    private final AuthRole role;
 
     public JwtUserDetails(com.lcsz.reuseplus.models.User user) {
         super(
@@ -20,7 +21,7 @@ public class JwtUserDetails extends User {
         );
         this.user = user;
         this.restaurant = null;
-        this.role = "USER";
+        this.role = AuthRole.USER;
     }
 
     public JwtUserDetails(Restaurant restaurant) {
@@ -31,14 +32,14 @@ public class JwtUserDetails extends User {
         );
         this.restaurant = restaurant;
         this.user = null;
-        this.role = "RESTAURANT";
+        this.role = AuthRole.RESTAURANT;
     }
 
     public UUID getId() {
         return user != null ? user.getId() : restaurant.getId();
     }
 
-    public String getRole() {
+    public AuthRole getRole() {
         return role;
     }
 

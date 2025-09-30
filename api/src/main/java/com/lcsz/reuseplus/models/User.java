@@ -2,17 +2,25 @@ package com.lcsz.reuseplus.models;
 
 import com.lcsz.reuseplus.enums.users.UserStatus;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class User {
+@EntityListeners(AuditingEntityListener.class)
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     private UUID id;
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false, length = 11)
@@ -26,8 +34,9 @@ public class User {
     public User() {
     }
 
-    public User(UUID id, String name, String cpf,String password, UserStatus status) {
+    public User(UUID id, String name, LocalDateTime createdAt, String cpf,String password, UserStatus status) {
         this.id = id;
+        this.createdAt = createdAt;
         this.name = name;
         this.cpf = cpf;
         this.password = password;
@@ -40,6 +49,14 @@ public class User {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getName() {
@@ -90,6 +107,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", createdAt='" + createdAt + '\'' +
                 ", name='" + name + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", password='" + password + '\'' +

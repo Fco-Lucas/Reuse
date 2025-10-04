@@ -1,5 +1,6 @@
 package com.lcsz.reuseplus.services;
 
+import com.lcsz.reuseplus.AppProperties;
 import com.lcsz.reuseplus.dtos.AuthRole;
 import com.lcsz.reuseplus.dtos.posts.PostCreateDto;
 import com.lcsz.reuseplus.dtos.posts.PostListResponseDto;
@@ -13,6 +14,7 @@ import com.lcsz.reuseplus.models.User;
 import com.lcsz.reuseplus.repositorys.PostRepository;
 import com.lcsz.reuseplus.repositorys.projections.PostProjection;
 import com.lcsz.reuseplus.security.AuthenticatedUserProvider;
+import com.lcsz.reuseplus.utils.PostUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
@@ -29,17 +32,28 @@ import java.util.UUID;
 public class PostService {
     private final PostRepository repository;
     private final AuthenticatedUserProvider authUserProvider;
-    private final Path rootLocation = Path.of("images/posts");
     private final UserService userService;
     private final RestaurantService restaurantService;
     private final PostLikeService postLikeService;
+    private final AppProperties appProperties;
 
-    public PostService(PostRepository repository, AuthenticatedUserProvider authUserProvider, UserService userService, RestaurantService restaurantService, PostLikeService postLikeService) {
+    public PostService(PostRepository repository, AuthenticatedUserProvider authUserProvider, UserService userService, RestaurantService restaurantService, PostLikeService postLikeService, AppProperties appProperties) {
         this.repository = repository;
         this.authUserProvider = authUserProvider;
         this.userService = userService;
         this.restaurantService = restaurantService;
         this.postLikeService = postLikeService;
+        this.appProperties = appProperties;
+    }
+
+    private String getImageUrl (String imageKey) {
+        String imagesBaseUrl = appProperties.getBaseImagesUrl();
+        return imagesBaseUrl + imageKey;
+    }
+
+    private String getImagePath (String imageKey) {
+        String imagesBasePath = appProperties.getBaseImagesPath();
+        return imagesBasePath + imageKey;
     }
 
     public String storePostImage(MultipartFile file, Long postId) {
@@ -52,7 +66,10 @@ public class PostService {
             String extension = getFileExtension(file.getOriginalFilename());
             String filename = UUID.randomUUID() + (extension.isBlank() ? "" : "." + extension);
 
-            // Cria pasta se não existir: images/posts/{postId}
+            // Converte a propriedade para Path
+            Path rootLocation = Paths.get(appProperties.getBaseImagesPath());
+
+            // Cria a pasta se não existir: uploads/posts/{postId}
             Path postDir = rootLocation.resolve(postId.toString());
             Files.createDirectories(postDir);
 
@@ -63,7 +80,7 @@ public class PostService {
             Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
 
             // Retorna caminho relativo (pra salvar no banco)
-            return "images/posts/" + postId + "/" + filename;
+            return postId + "/" + filename;
 
         } catch (IOException e) {
             throw new RuntimeException("Falha ao salvar a imagem: " + e.getMessage(), e);
@@ -85,7 +102,6 @@ public class PostService {
         if (authUserRole == null) throw new RuntimeException("Role do usuário autenticado não encontrado");
 
         Post entity = PostMapper.createDtoToEntity(createDto);
-        System.out.println(entity);
 
         switch (authUserRole) {
             case USER -> entity.setUserId(authUserId);
@@ -109,18 +125,25 @@ public class PostService {
 
         Page<PostProjection> projections = repository.findAllPageable(pageable, authUserId);
 
-        return projections.map(p -> new PostListResponseDto(
-                p.getId(),
-                p.getPostLikeId(),
-                p.getUserId(),
-                p.getUserName(),
-                p.getRestaurantId(),
-                p.getRestaurantName(),
-                p.getName(),
-                p.getAmount(),
-                p.getValidUntil(),
-                "http://localhost:8181/api/v1/" + p.getImageKey()
-        ));
+        return projections.map(p -> {
+            // Verifica se a imagem existe no diretório antes de adicionar na resposta
+            String imagePath = getImagePath(p.getImageKey());
+            String imageUrl = null;
+            if (PostUtils.fileExists(imagePath)) imageUrl = getImageUrl(p.getImageKey());
+
+            return new PostListResponseDto(
+                    p.getId(),
+                    p.getPostLikeId(),
+                    p.getUserId(),
+                    p.getUserName(),
+                    p.getRestaurantId(),
+                    p.getRestaurantName(),
+                    p.getName(),
+                    p.getAmount(),
+                    p.getValidUntil(),
+                    imageUrl
+            );
+        });
     }
 
     @Transactional(readOnly = true)
@@ -136,7 +159,13 @@ public class PostService {
         if(post.getUserId() == null && post.getRestaurantId() == null) throw new RuntimeException(String.format("Post com ID: %s não possui user_id e restaurant_id", id));
 
         PostResponseDto responseDto = PostMapper.entityToResponse(post);
-        responseDto.setImageUrl("http://localhost:8181/api/v1/" + post.getImageKey());
+
+        // Verifica se a imagem existe no diretório antes de adicionar na resposta
+        String imagePath = getImagePath(post.getImageKey());
+        if (PostUtils.fileExists(imagePath)) {
+            String imageUrl = getImageUrl(post.getImageKey());
+            responseDto.setImageUrl(imageUrl);
+        }
 
         if(post.getUserId() != null) {
             // Verifica se o usuário curtiu essa publicação

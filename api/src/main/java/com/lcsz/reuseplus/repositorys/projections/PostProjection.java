@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public interface PostProjection {
     Long getId();
+    Long getPostLikeId();
     UUID getUserId();
     String getUserName();
     UUID getRestaurantId();

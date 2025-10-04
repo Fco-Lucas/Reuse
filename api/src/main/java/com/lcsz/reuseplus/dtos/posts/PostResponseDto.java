@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public class PostResponseDto {
     private Long id;
+    private Long postLikeId;
     private UUID userId;
     private String userName;
     private UUID restaurantId;
@@ -19,8 +20,9 @@ public class PostResponseDto {
     public PostResponseDto() {
     }
 
-    public PostResponseDto(Long id, UUID userId, String userName, UUID restaurantId, String restaurantName, String name, LocalDateTime validUntil, LocalDateTime createdAt, String address, String description, String imageUrl) {
+    public PostResponseDto(Long id, Long postLikeId, UUID userId, String userName, UUID restaurantId, String restaurantName, String name, LocalDateTime validUntil, LocalDateTime createdAt, String address, String description, String imageUrl) {
         this.id = id;
+        this.postLikeId = postLikeId;
         this.userId = userId;
         this.userName = userName;
         this.restaurantId = restaurantId;
@@ -39,6 +41,14 @@ public class PostResponseDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getPostLikeId() {
+        return postLikeId;
+    }
+
+    public void setPostLikeId(Long postLikeId) {
+        this.postLikeId = postLikeId;
     }
 
     public UUID getUserId() {
@@ -125,6 +135,7 @@ public class PostResponseDto {
     public String toString() {
         return "PostResponseDto{" +
                 "id=" + id +
+                ", postLikeId=" + postLikeId +
                 ", userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", restaurantId=" + restaurantId +

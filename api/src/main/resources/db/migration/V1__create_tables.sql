@@ -33,3 +33,21 @@ CREATE TABLE IF NOT EXISTS posts (
         OR (user_id IS NULL AND restaurant_id IS NOT NULL)
     )
 );
+
+CREATE TABLE IF NOT EXISTS post_likes (
+    id BIGSERIAL PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    post_id BIGINT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(12) NOT NULL CHECK (status IN ('ACTIVE', 'INACTIVE')),
+    UNIQUE (user_id, post_id) -- garante que só pode curtir uma vez
+);
+
+CREATE TABLE IF NOT EXISTS post_redemptions (
+    id BIGSERIAL PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    post_id BIGINT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(12) NOT NULL CHECK (status IN ('RESERVED', 'CANCELLED', 'COMPLETED')) DEFAULT 'RESERVED',
+    UNIQUE (user_id, post_id) -- garante que cada usuário resgate apenas 1 unidade por post
+);

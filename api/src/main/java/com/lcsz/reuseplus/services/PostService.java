@@ -7,6 +7,7 @@ import com.lcsz.reuseplus.dtos.posts.PostResponseDto;
 import com.lcsz.reuseplus.exceptions.customExceptions.EntityNotFoundException;
 import com.lcsz.reuseplus.mappers.PostMapper;
 import com.lcsz.reuseplus.models.Post;
+import com.lcsz.reuseplus.models.PostLike;
 import com.lcsz.reuseplus.models.Restaurant;
 import com.lcsz.reuseplus.models.User;
 import com.lcsz.reuseplus.repositorys.PostRepository;
@@ -31,12 +32,14 @@ public class PostService {
     private final Path rootLocation = Path.of("images/posts");
     private final UserService userService;
     private final RestaurantService restaurantService;
+    private final PostLikeService postLikeService;
 
-    public PostService(PostRepository repository, AuthenticatedUserProvider authUserProvider, UserService userService, RestaurantService restaurantService) {
+    public PostService(PostRepository repository, AuthenticatedUserProvider authUserProvider, UserService userService, RestaurantService restaurantService, PostLikeService postLikeService) {
         this.repository = repository;
         this.authUserProvider = authUserProvider;
         this.userService = userService;
         this.restaurantService = restaurantService;
+        this.postLikeService = postLikeService;
     }
 
     public String storePostImage(MultipartFile file, Long postId) {
@@ -94,17 +97,21 @@ public class PostService {
         String imagePath = storePostImage(image, saved.getId());
         saved.setImageKey(imagePath);
 
-        return PostMapper.entityToResponse(saved);
+        return getByIdDto(saved.getId());
     }
 
     @Transactional(readOnly = true)
     public Page<PostListResponseDto> getAll (
             Pageable pageable
     ) {
-        Page<PostProjection> projections = repository.findAllPageable(pageable);
+        // Obtém o ID do usuário autenticado
+        UUID authUserId = authUserProvider.getAuthenticatedUserId();
+
+        Page<PostProjection> projections = repository.findAllPageable(pageable, authUserId);
 
         return projections.map(p -> new PostListResponseDto(
                 p.getId(),
+                p.getPostLikeId(),
                 p.getUserId(),
                 p.getUserName(),
                 p.getRestaurantId(),
@@ -132,6 +139,10 @@ public class PostService {
         responseDto.setImageUrl("http://localhost:8181/api/v1/" + post.getImageKey());
 
         if(post.getUserId() != null) {
+            // Verifica se o usuário curtiu essa publicação
+            PostLike postLike = this.postLikeService.getByUserIdAndPostId(post.getUserId(), post.getId());
+            if(postLike != null) responseDto.setPostLikeId(postLike.getId());
+
             User user = userService.getById(post.getUserId());
             responseDto.setUserName(user.getName());
         }

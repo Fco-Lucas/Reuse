@@ -49,6 +49,9 @@ CREATE TABLE IF NOT EXISTS post_redemptions (
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     post_id BIGINT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(12) NOT NULL CHECK (status IN ('RESERVED', 'CANCELLED', 'COMPLETED')) DEFAULT 'RESERVED',
-    UNIQUE (user_id, post_id) -- garante que cada usuário resgate apenas 1 unidade por post
+    status VARCHAR(12) NOT NULL CHECK (status IN ('RESERVED', 'CANCELLED', 'COMPLETED')) DEFAULT 'RESERVED'
 );
+-- Índice único apenas para status RESERVED ou COMPLETED
+CREATE UNIQUE INDEX unique_active_redemption_per_user_post
+ON post_redemptions (user_id, post_id)
+WHERE status IN ('RESERVED', 'COMPLETED');

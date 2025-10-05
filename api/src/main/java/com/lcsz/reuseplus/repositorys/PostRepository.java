@@ -30,6 +30,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             LEFT JOIN restaurants R ON P.restaurant_id = R.id
             LEFT JOIN post_likes L ON L.user_id = :authUserId AND P.id = L.post_id
         WHERE P.status = 'ACTIVE'
+              AND NOT EXISTS (
+                  SELECT 1
+                  FROM post_redemptions RD
+                  WHERE RD.user_id = :authUserId
+                    AND RD.post_id = P.id
+              );
     """, nativeQuery = true)
     Page<PostProjection> findAllPageable(
             Pageable pageable,

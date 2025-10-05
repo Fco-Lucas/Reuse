@@ -50,8 +50,8 @@ public class PostRedemptionService {
         PostRedemptionProjection exists = getByUserIdAndPostId(authUserId, postId);
         if(exists != null) throw new RuntimeException("Você já resgatou este produto, apenas 1 produto por usuário pode ser resgatado");
 
-        // Decrementa o valor
-        postService.updateAmountRedemption(postId);
+        // Incrementa o valor
+        postService.updateAmountRedemption(postId, true);
 
         PostRedemption entity = new PostRedemption();
         entity.setUserId(authUserId);
@@ -70,8 +70,25 @@ public class PostRedemptionService {
 
     @Transactional
     public PostRedemption updateStatus (Long postRedemptionId, PostRedemptionStatus status) {
+        if(!status.equals(PostRedemptionStatus.CANCELLED) && !status.equals(PostRedemptionStatus.COMPLETED)) {
+            throw new RuntimeException("O status de um resgate só pode ser alterado para CANCELLED ou COMPLETED");
+        }
+
         PostRedemption postRedemption = getById(postRedemptionId);
-        if (status != null && !postRedemption.getStatus().equals(status)) postRedemption.setStatus(status);
+
+        UUID authUserId = authenticatedUserProvider.getAuthenticatedUserId();
+        if (!authUserId.equals(postRedemption.getUserId()) && status.equals(PostRedemptionStatus.COMPLETED)) {
+            throw new RuntimeException("Apenas quem resgatou a publicação pode completar o resgate");
+        }
+        if (!authUserId.equals(postRedemption.getUserId()) && status.equals(PostRedemptionStatus.CANCELLED)) {
+            throw new RuntimeException("Apenas quem resgatou a publicação pode cancelar o resgate");
+        }
+
+        // Se o usuário está cancelando o resgate, decrementa o número de resgates do pedido
+        if (status.equals(PostRedemptionStatus.CANCELLED) && !postRedemption.getStatus().equals(status)) postService.updateAmountRedemption(postRedemption.getPostId(), false);
+
+        if (!postRedemption.getStatus().equals(status)) postRedemption.setStatus(status);
+
         return repository.save(postRedemption);
     }
 }

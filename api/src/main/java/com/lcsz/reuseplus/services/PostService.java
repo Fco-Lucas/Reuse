@@ -168,6 +168,8 @@ public class PostService {
             newStatus = PostStatus.FULL;
         } else if (post.getValidUntil().isBefore(LocalDateTime.now()) && !post.getStatus().equals(PostStatus.EXPIRED)) {
             newStatus = PostStatus.EXPIRED;
+        } else if (!post.getStatus().equals(PostStatus.ACTIVE)) {
+            newStatus = PostStatus.ACTIVE;
         }
 
         if (newStatus != null) {
@@ -217,20 +219,26 @@ public class PostService {
     }
 
     @Transactional
-    public Post updateAmountRedemption (Long id) {
+    public void updateAmountRedemption (Long id, boolean increment) {
         Post post = getById(id);
         Integer amount = post.getAmount();
         Integer amountRedemption = post.getAmountRedemption();
 
-        // Se os valores já estão iguais retorna
-        if(Objects.equals(amount, amountRedemption)) return post;
+        // Se os valores já estão iguais e está incrementando retorna
 
-        Integer newAmountRedemption = amountRedemption + 1;
-        post.setAmountRedemption(newAmountRedemption);
+        Integer newAmountRedemption = null;
+        // Incrementa caso não tenha atingido o máximo
+        if(!Objects.equals(amount, amountRedemption) && increment) newAmountRedemption = amountRedemption + 1;
+        // Decrementa caso o valor atual de amountRedemption esteja diferente de 0
+        if (!Objects.equals(amountRedemption, 0) && !increment) newAmountRedemption = amountRedemption - 1;
 
-        // Se atingiu a capacidade atualiza o status também
-        if(Objects.equals(amount, newAmountRedemption)) post.setStatus(PostStatus.FULL);
+        if(newAmountRedemption != null) {
+            post.setAmountRedemption(newAmountRedemption);
 
-        return repository.save(post);
+            Post saved = repository.save(post);
+
+            // Verifica e atualiza o status também
+            checkAndUpdateStatus(saved);
+        }
     }
 }

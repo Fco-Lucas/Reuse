@@ -28,7 +28,7 @@ public class PostLikeService {
     public PostLike create (Long postId) {
         // Verifica se é um usuaŕio que está tentando curtir o POST
         AuthRole authUserRole = authenticatedUserProvider.getAuthenticatedUserRole();
-        if(!authUserRole.equals(AuthRole.USER)) throw new RuntimeException("Somente usuários podem curtir publicacões");
+        if(!authUserRole.equals(AuthRole.USER)) throw new RuntimeException("Somente usuários podem curtir publicações");
 
         UUID authUserId = authenticatedUserProvider.getAuthenticatedUserId();
 

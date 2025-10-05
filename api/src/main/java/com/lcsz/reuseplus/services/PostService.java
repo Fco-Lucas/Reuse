@@ -5,6 +5,7 @@ import com.lcsz.reuseplus.dtos.AuthRole;
 import com.lcsz.reuseplus.dtos.posts.PostCreateDto;
 import com.lcsz.reuseplus.dtos.posts.PostListResponseDto;
 import com.lcsz.reuseplus.dtos.posts.PostResponseDto;
+import com.lcsz.reuseplus.enums.posts.PostStatus;
 import com.lcsz.reuseplus.exceptions.customExceptions.EntityNotFoundException;
 import com.lcsz.reuseplus.mappers.PostMapper;
 import com.lcsz.reuseplus.models.Post;
@@ -26,6 +27,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -117,19 +120,18 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostListResponseDto> getAll (
-            Pageable pageable
-    ) {
-        // Obtém o ID do usuário autenticado
+    public Page<PostListResponseDto> getAll(Pageable pageable) {
         UUID authUserId = authUserProvider.getAuthenticatedUserId();
-
         Page<PostProjection> projections = repository.findAllPageable(pageable, authUserId);
 
         return projections.map(p -> {
-            // Verifica se a imagem existe no diretório antes de adicionar na resposta
-            String imagePath = getImagePath(p.getImageKey());
             String imageUrl = null;
-            if (PostUtils.fileExists(imagePath)) imageUrl = getImageUrl(p.getImageKey());
+            String imagePath = getImagePath(p.getImageKey());
+            if (PostUtils.fileExists(imagePath)) {
+                imageUrl = getImageUrl(p.getImageKey());
+            }
+
+            PostStatus resolvedStatus = resolveStatus(p);
 
             return new PostListResponseDto(
                     p.getId(),
@@ -140,17 +142,47 @@ public class PostService {
                     p.getRestaurantName(),
                     p.getName(),
                     p.getAmount(),
+                    p.getAmountRedemption(),
                     p.getValidUntil(),
-                    imageUrl
+                    imageUrl,
+                    resolvedStatus
             );
         });
     }
 
-    @Transactional(readOnly = true)
-    public Post getById (Long id) {
-        return repository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Post com id: %s não encontrado", id))
-        );
+    private PostStatus resolveStatus(PostProjection p) {
+        if (Objects.equals(p.getAmount(), p.getAmountRedemption())) {
+            return PostStatus.FULL;
+        }
+        if (p.getValidUntil().isBefore(LocalDateTime.now())) {
+            return PostStatus.EXPIRED;
+        }
+        return p.getStatus();
+    }
+
+    @Transactional
+    public void checkAndUpdateStatus(Post post) {
+        PostStatus newStatus = null;
+
+        if (Objects.equals(post.getAmount(), post.getAmountRedemption()) && !post.getStatus().equals(PostStatus.FULL)) {
+            newStatus = PostStatus.FULL;
+        } else if (post.getValidUntil().isBefore(LocalDateTime.now()) && !post.getStatus().equals(PostStatus.EXPIRED)) {
+            newStatus = PostStatus.EXPIRED;
+        }
+
+        if (newStatus != null) {
+            post.setStatus(newStatus);
+            repository.save(post);
+        }
+    }
+
+    @Transactional
+    public Post getById(Long id) {
+        Post post = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Post com id: " + id + " não encontrado"));
+
+        checkAndUpdateStatus(post);
+        return post;
     }
 
     @Transactional(readOnly = true)
@@ -182,5 +214,23 @@ public class PostService {
         }
 
         return responseDto;
+    }
+
+    @Transactional
+    public Post updateAmountRedemption (Long id) {
+        Post post = getById(id);
+        Integer amount = post.getAmount();
+        Integer amountRedemption = post.getAmountRedemption();
+
+        // Se os valores já estão iguais retorna
+        if(Objects.equals(amount, amountRedemption)) return post;
+
+        Integer newAmountRedemption = amountRedemption + 1;
+        post.setAmountRedemption(newAmountRedemption);
+
+        // Se atingiu a capacidade atualiza o status também
+        if(Objects.equals(amount, newAmountRedemption)) post.setStatus(PostStatus.FULL);
+
+        return repository.save(post);
     }
 }

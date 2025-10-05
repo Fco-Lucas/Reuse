@@ -20,9 +20,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             P.restaurant_id, 
             R.name AS restaurant_name, 
             P.name, 
-            P.amount, 
+            P.amount,
+            P.amount_redemption, 
             P.valid_until, 
-            P.image_key
+            P.image_key,
+            P.status
         FROM posts P
             LEFT JOIN users U ON P.user_id = U.id
             LEFT JOIN restaurants R ON P.restaurant_id = R.id

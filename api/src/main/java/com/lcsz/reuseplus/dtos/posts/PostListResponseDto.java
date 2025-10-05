@@ -1,5 +1,7 @@
 package com.lcsz.reuseplus.dtos.posts;
 
+import com.lcsz.reuseplus.enums.posts.PostStatus;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -12,13 +14,15 @@ public class PostListResponseDto {
     private String restaurantName;
     private String name;
     private Integer amount;
+    private Integer amountRedemption;
     private LocalDateTime validUntil;
     private String imageUrl;
+    private PostStatus status;
 
     public PostListResponseDto() {
     }
 
-    public PostListResponseDto(Long id, Long postLikeId, UUID userId, String userName, UUID restaurantId, String restaurantName, String name, Integer amount, LocalDateTime validUntil, String imageUrl) {
+    public PostListResponseDto(Long id, Long postLikeId, UUID userId, String userName, UUID restaurantId, String restaurantName, String name, Integer amount, Integer amountRedemption, LocalDateTime validUntil, String imageUrl, PostStatus status) {
         this.id = id;
         this.postLikeId = postLikeId;
         this.userId = userId;
@@ -27,8 +31,10 @@ public class PostListResponseDto {
         this.restaurantName = restaurantName;
         this.name = name;
         this.amount = amount;
+        this.amountRedemption = amountRedemption;
         this.validUntil = validUntil;
         this.imageUrl = imageUrl;
+        this.status = status;
     }
 
     public Long getId() {
@@ -95,6 +101,14 @@ public class PostListResponseDto {
         this.amount = amount;
     }
 
+    public Integer getAmountRedemption() {
+        return amountRedemption;
+    }
+
+    public void setAmountRedemption(Integer amountRedemption) {
+        this.amountRedemption = amountRedemption;
+    }
+
     public LocalDateTime getValidUntil() {
         return validUntil;
     }
@@ -111,6 +125,14 @@ public class PostListResponseDto {
         this.imageUrl = imageUrl;
     }
 
+    public PostStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PostStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "PostListResponseDto{" +
@@ -122,8 +144,10 @@ public class PostListResponseDto {
                 ", restaurantName=" + restaurantName +
                 ", name='" + name + '\'' +
                 ", amount=" + amount +
+                ", amountRedemption=" + amountRedemption +
                 ", validUntil=" + validUntil +
                 ", imageUrl='" + imageUrl + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

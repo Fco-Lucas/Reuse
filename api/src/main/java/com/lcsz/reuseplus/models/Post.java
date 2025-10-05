@@ -27,6 +27,8 @@ public class Post implements Serializable {
     private String name;
     @Column(nullable = false)
     private Integer amount;
+    @Column(nullable = false)
+    private Integer amountRedemption = 0;
     private String description;
     @Column(nullable = false)
     private String address;
@@ -44,12 +46,13 @@ public class Post implements Serializable {
     public Post() {
     }
 
-    public Post(Long id, UUID userId, UUID restaurantId, String name, Integer amount, String description, String address, LocalDateTime validUntil, LocalDateTime createdAt, String imageKey, PostStatus status) {
+    public Post(Long id, UUID userId, UUID restaurantId, String name, Integer amount, Integer amountRedemption, String description, String address, LocalDateTime validUntil, LocalDateTime createdAt, String imageKey, PostStatus status) {
         this.id = id;
         this.userId = userId;
         this.restaurantId = restaurantId;
         this.name = name;
         this.amount = amount;
+        this.amountRedemption = amountRedemption;
         this.description = description;
         this.address = address;
         this.validUntil = validUntil;
@@ -96,6 +99,14 @@ public class Post implements Serializable {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Integer getAmountRedemption() {
+        return amountRedemption;
+    }
+
+    public void setAmountRedemption(Integer amountRedemption) {
+        this.amountRedemption = amountRedemption;
     }
 
     public String getDescription() {
@@ -166,6 +177,7 @@ public class Post implements Serializable {
                 ", restaurantId=" + restaurantId +
                 ", name='" + name + '\'' +
                 ", amount=" + amount +
+                ", amountRedemption=" + amountRedemption +
                 ", description='" + description + '\'' +
                 ", address=" + address +
                 ", validUntil=" + validUntil +

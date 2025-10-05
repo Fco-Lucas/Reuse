@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS posts (
     restaurant_id UUID REFERENCES restaurants(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
     amount INTEGER NOT NULL,
+    amount_redemption INTEGER NOT NULL,
     description TEXT,
     address VARCHAR(255) NOT NULL,
     valid_until TIMESTAMP NOT NULL,

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'register_controller.dart';
+part of 'login_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,53 +9,52 @@ part of 'register_controller.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(RegisterController)
-const registerControllerProvider = RegisterControllerProvider._();
+@ProviderFor(LoginController)
+const loginControllerProvider = LoginControllerProvider._();
 
-final class RegisterControllerProvider
-    extends $NotifierProvider<RegisterController, RegisterState> {
-  const RegisterControllerProvider._()
+final class LoginControllerProvider
+    extends $NotifierProvider<LoginController, LoginState> {
+  const LoginControllerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'registerControllerProvider',
+        name: r'loginControllerProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$registerControllerHash();
+  String debugGetCreateSourceHash() => _$loginControllerHash();
 
   @$internal
   @override
-  RegisterController create() => RegisterController();
+  LoginController create() => LoginController();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(RegisterState value) {
+  Override overrideWithValue(LoginState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<RegisterState>(value),
+      providerOverride: $SyncValueProvider<LoginState>(value),
     );
   }
 }
 
-String _$registerControllerHash() =>
-    r'5dad7e3f24e5dd8e6157b939a8f0416170e3cee1';
+String _$loginControllerHash() => r'780139ed3ef905b15805eb89530dc600958066ff';
 
-abstract class _$RegisterController extends $Notifier<RegisterState> {
-  RegisterState build();
+abstract class _$LoginController extends $Notifier<LoginState> {
+  LoginState build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<RegisterState, RegisterState>;
+    final ref = this.ref as $Ref<LoginState, LoginState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<RegisterState, RegisterState>,
-              RegisterState,
+              AnyNotifier<LoginState, LoginState>,
+              LoginState,
               Object?,
               Object?
             >;

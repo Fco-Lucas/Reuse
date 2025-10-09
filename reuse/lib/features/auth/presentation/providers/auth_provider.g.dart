@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'theme_provider.dart';
+part of 'auth_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,52 +9,51 @@ part of 'theme_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(ThemeProvider)
-const themeProviderProvider = ThemeProviderProvider._();
+@ProviderFor(Auth)
+const authProvider = AuthProvider._();
 
-final class ThemeProviderProvider
-    extends $NotifierProvider<ThemeProvider, ThemeMode> {
-  const ThemeProviderProvider._()
+final class AuthProvider extends $NotifierProvider<Auth, AuthState> {
+  const AuthProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'themeProviderProvider',
-        isAutoDispose: true,
+        name: r'authProvider',
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$themeProviderHash();
+  String debugGetCreateSourceHash() => _$authHash();
 
   @$internal
   @override
-  ThemeProvider create() => ThemeProvider();
+  Auth create() => Auth();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ThemeMode value) {
+  Override overrideWithValue(AuthState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<ThemeMode>(value),
+      providerOverride: $SyncValueProvider<AuthState>(value),
     );
   }
 }
 
-String _$themeProviderHash() => r'fa5ecc5d3a9329a23740e3584b5da7f001859ba8';
+String _$authHash() => r'be126fe054b7ec093942b3082bd64bd3d8faf73e';
 
-abstract class _$ThemeProvider extends $Notifier<ThemeMode> {
-  ThemeMode build();
+abstract class _$Auth extends $Notifier<AuthState> {
+  AuthState build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<ThemeMode, ThemeMode>;
+    final ref = this.ref as $Ref<AuthState, AuthState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<ThemeMode, ThemeMode>,
-              ThemeMode,
+              AnyNotifier<AuthState, AuthState>,
+              AuthState,
               Object?,
               Object?
             >;

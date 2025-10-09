@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:reuse/features/auth/presentation/controller/register_controller.dart';
 import 'package:reuse/features/auth/presentation/controller/register_state.dart';
 import 'package:reuse/features/auth/presentation/widgets/register_form.dart';
@@ -14,9 +15,12 @@ class RegisterScreen extends ConsumerWidget {
       registerControllerProvider, 
       (previous, next) {
         next.whenOrNull(
-          success: (message) => ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message), backgroundColor: Colors.green),
-          ),
+          success: (message) => {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(message), backgroundColor: Colors.green),
+            ),
+            context.go("/login"),
+          },
           error: (message) => ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(message), backgroundColor: Colors.red),
           ),

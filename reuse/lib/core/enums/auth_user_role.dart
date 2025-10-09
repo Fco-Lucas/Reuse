@@ -1,0 +1,4 @@
+enum AuthUserRole {
+  USER,
+  RESTAURANT
+}

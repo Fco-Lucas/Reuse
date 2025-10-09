@@ -1,4 +1,10 @@
+import 'package:reuse/core/errors/api_exception.dart';
+import 'package:reuse/core/providers/logger_provider.dart';
 import 'package:reuse/features/auth/presentation/controller/register_state.dart';
+import 'package:reuse/features/restaurants/data/models/requests/restaurant_create_request_model.dart';
+import 'package:reuse/features/restaurants/repositorys/restaurant_repository.dart';
+import 'package:reuse/features/users/data/models/requests/user_create_request_model.dart';
+import 'package:reuse/features/users/data/repositorys/user_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'register_controller.g.dart';
@@ -10,22 +16,41 @@ class RegisterController extends _$RegisterController {
     return const RegisterState.initial();
   }
 
+  Future<void> _createUser({ required UserCreateRequestModel data }) async {
+    final userRepository = ref.read(userRepositoryProvider);
+    await userRepository.createUser(data: data);
+  }
+
+  Future<void> _createRestaurant({ required RestaurantCreateRequestModel data }) async {
+    final restaurantRepository = ref.read(restaurantRepositoryProvider);
+    await restaurantRepository.createRestaurant(data: data);
+  }
+
   Future<void> register(String name, String login, String password) async {
-    // 1. Transita para o estado de Loading
     state = const RegisterState.loading();
+    final log = ref.read(loggerProvider);
 
     try {
-      // 2. Simula a chamada de API
-      await Future.delayed(const Duration(seconds: 2));
+      final onlyNumbers = login.replaceAll(RegExp(r'[^0-9]'), '');
 
-      // throw Exception("Simulando um erro de rede"); // Descomente para testar o erro
+      if (onlyNumbers.length <= 11) {
+        // CPF
+        final data = UserCreateRequestModel(name: name, cpf: onlyNumbers, password: password);
+        await _createUser(data: data);
+      } else {
+        // CNPJ
+        final data = RestaurantCreateRequestModel(name: name, cnpj: onlyNumbers, password: password);
+        await _createRestaurant(data: data);
+      }
 
-      // 3. Em caso de sucesso, transita para o estado Success
       state = const RegisterState.success("Cadastro realizado com sucesso!");
 
-    } catch (e) {
-      // 4. Em caso de erro, transita para o estado Error
-      state = RegisterState.error(e.toString());
+    } on ApiException catch (e, st) {
+      log.e("Erro da API ao cadastrar: ${e.message}", error: e, stackTrace: st);
+      state = RegisterState.error(e.message); 
+    } catch (e, st) {
+      log.e("Erro inesperado ao cadastrar", error: e, stackTrace: st);
+      state = const RegisterState.error("Ocorreu um erro inesperado. Tente novamente.");
     }
   }
 }

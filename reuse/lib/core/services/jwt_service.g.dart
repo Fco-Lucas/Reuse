@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'app_router.dart';
+part of 'jwt_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,43 +9,43 @@ part of 'app_router.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(router)
-const routerProvider = RouterProvider._();
+@ProviderFor(jwtService)
+const jwtServiceProvider = JwtServiceProvider._();
 
-final class RouterProvider
-    extends $FunctionalProvider<GoRouter, GoRouter, GoRouter>
-    with $Provider<GoRouter> {
-  const RouterProvider._()
+final class JwtServiceProvider
+    extends $FunctionalProvider<JwtService, JwtService, JwtService>
+    with $Provider<JwtService> {
+  const JwtServiceProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'routerProvider',
+        name: r'jwtServiceProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$routerHash();
+  String debugGetCreateSourceHash() => _$jwtServiceHash();
 
   @$internal
   @override
-  $ProviderElement<GoRouter> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<JwtService> $createElement($ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  GoRouter create(Ref ref) {
-    return router(ref);
+  JwtService create(Ref ref) {
+    return jwtService(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GoRouter value) {
+  Override overrideWithValue(JwtService value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<GoRouter>(value),
+      providerOverride: $SyncValueProvider<JwtService>(value),
     );
   }
 }
 
-String _$routerHash() => r'aca1f51cc5e908f6771b33cf0016ea2241752b04';
+String _$jwtServiceHash() => r'5de78edd4fee387232079a34a08ea23ce149bec4';

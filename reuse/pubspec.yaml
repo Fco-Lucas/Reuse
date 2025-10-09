@@ -21,7 +21,10 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   go_router: ^16.2.4
   mask_text_input_formatter: ^2.9.0
-
+  flutter_dotenv: ^6.0.0
+  jwt_decoder: ^2.0.1
+  logger: ^2.6.2
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -33,14 +36,12 @@ dev_dependencies:
   json_serializable: ^6.11.1
 
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env.dev
+    - .env.prod
     - assets/images/initial_screen_image.png
     - assets/images/bottom_navigation_bar_image.png
 

@@ -49,6 +49,12 @@ class RegisterScreen extends ConsumerWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 5),
+                const Text(
+                  "Preencha as informações abaixo para criar sua conta",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 28),
                 RegisterForm(
                   onRegister: onRegisterAttempt,

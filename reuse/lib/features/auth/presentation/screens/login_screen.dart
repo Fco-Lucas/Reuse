@@ -21,6 +21,9 @@ class LoginScreen extends ConsumerWidget {
       );
     });
 
+    final state = ref.watch(loginControllerProvider);
+    final isLoading = state.maybeMap(loading: (_) => true, orElse: () => false);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
       appBar: AppBar(
@@ -37,8 +40,14 @@ class LoginScreen extends ConsumerWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 5),
+                const Text(
+                  "Realize login abaixo",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 28),
-                LoginForm(onLogin: onLoginAttempt, isLoading: false),
+                LoginForm(onLogin: onLoginAttempt, isLoading: isLoading),
                 const SizedBox(height: 150), // Espaço para a imagem do rodapé
               ],
             ),

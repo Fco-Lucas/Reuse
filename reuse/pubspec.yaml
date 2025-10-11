@@ -34,6 +34,8 @@ dev_dependencies:
   riverpod_generator: ^3.0.1
   freezed: ^3.2.3
   json_serializable: ^6.11.1
+  flutter_native_splash: ^2.4.6
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
@@ -44,6 +46,8 @@ flutter:
     - .env.prod
     - assets/images/initial_screen_image.png
     - assets/images/bottom_navigation_bar_image.png
+    - assets/images/app_icon.png
+    - assets/images/app_icon_name.png
 
   fonts:
     - family: Anton
@@ -55,3 +59,28 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
+
+flutter_launcher_icons:
+  # --- Configurações do Android ---
+  android: "launcher_icon"
+  image_path: "assets/images/app_icon.jpeg"
+  min_sdk_android: 21
+
+  # --- Configurações do iOS ---
+  ios: true
+  image_path_ios: "assets/images/app_icon.jpeg"
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#321606"
+  color_dark: "#321606"
+
+  image: assets/images/app_icon.png
+  image_dark: assets/images/app_icon.png
+
+  # Configurações específicas para Android 12+ que usa um ícone central
+  android_12:
+    image: assets/images/app_icon.png
+    icon_background_color: "#321606"
+    image_dark: assets/images/app_icon.png
+    icon_background_color_dark: "#321606"

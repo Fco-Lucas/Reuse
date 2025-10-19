@@ -1,6 +1,7 @@
 package com.lcsz.reuseplus.controllers;
 
 import com.lcsz.reuseplus.dtos.postLikes.PostLikeUpdateDto;
+import com.lcsz.reuseplus.enums.postLikes.PostLikeStatus;
 import com.lcsz.reuseplus.models.PostLike;
 import com.lcsz.reuseplus.services.PostLikeService;
 import jakarta.validation.Valid;
@@ -18,7 +19,7 @@ public class PostLikeController {
     }
 
     @PostMapping
-    public ResponseEntity<PostLike> createPostLike (
+    public ResponseEntity<PostLike> likePost (
         @PathVariable Long postId
     ) {
         PostLike responseDto = service.create(postId);
@@ -26,11 +27,11 @@ public class PostLikeController {
     }
 
     @PatchMapping("{postLikeId}")
-    public ResponseEntity<PostLike> updatePostLike (
+    public ResponseEntity<PostLike> unLikePost (
             @PathVariable Long postId,
-            @PathVariable Long postLikeId,
-            @RequestBody @Valid PostLikeUpdateDto updateDto
+            @PathVariable Long postLikeId
     ) {
+        PostLikeUpdateDto updateDto = new PostLikeUpdateDto(PostLikeStatus.INACTIVE);
         PostLike responseDto = service.update(postLikeId, updateDto);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }

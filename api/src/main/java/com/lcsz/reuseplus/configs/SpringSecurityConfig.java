@@ -48,6 +48,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.POST, appBaseUrl + "restaurants").permitAll()
                         .requestMatchers(HttpMethod.POST, appBaseUrl + "auth").permitAll()
                         .requestMatchers(HttpMethod.GET,appBaseUrl + "ping").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
                         .requestMatchers(DOCUMENTATION_OPENAPI).permitAll()
                         .anyRequest().authenticated()
                 ).sessionManagement(

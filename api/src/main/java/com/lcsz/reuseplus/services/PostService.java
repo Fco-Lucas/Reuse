@@ -5,6 +5,7 @@ import com.lcsz.reuseplus.dtos.AuthRole;
 import com.lcsz.reuseplus.dtos.posts.PostCreateDto;
 import com.lcsz.reuseplus.dtos.posts.PostListResponseDto;
 import com.lcsz.reuseplus.dtos.posts.PostResponseDto;
+import com.lcsz.reuseplus.enums.postLikes.PostLikeStatus;
 import com.lcsz.reuseplus.enums.posts.PostStatus;
 import com.lcsz.reuseplus.exceptions.customExceptions.EntityNotFoundException;
 import com.lcsz.reuseplus.mappers.PostMapper;
@@ -47,6 +48,17 @@ public class PostService {
         this.restaurantService = restaurantService;
         this.postLikeService = postLikeService;
         this.appProperties = appProperties;
+    }
+
+    // Retorna a entidade caso o usuário tenha curtido o POST
+    private PostLike getPostLikeForPost (UUID userId, Long postId) {
+        return postLikeService.getByUserIdAndPostId(userId, postId);
+    }
+
+    // Retorna se o usuário curtiu a publicação
+    private Boolean postIsLiked (UUID userId, Long postId) {
+        PostLike postLike = getPostLikeForPost(userId, postId);
+        return postLike != null && postLike.getStatus().equals(PostLikeStatus.ACTIVE);
     }
 
     private String getImageUrl (String imageKey) {
@@ -133,9 +145,12 @@ public class PostService {
 
             PostStatus resolvedStatus = resolveStatus(p);
 
+            // Verifica se o usuário curtiu essa publicação
+            Boolean isLiked = postIsLiked(authUserId, p.getId());
+
             return new PostListResponseDto(
                     p.getId(),
-                    p.getPostLikeId(),
+                    isLiked,
                     p.getUserId(),
                     p.getUserName(),
                     p.getRestaurantId(),
@@ -189,6 +204,8 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostResponseDto getByIdDto (Long id) {
+        UUID authUserId = authUserProvider.getAuthenticatedUserId();
+
         Post post = getById(id);
         if(post.getUserId() == null && post.getRestaurantId() == null) throw new RuntimeException(String.format("Post com ID: %s não possui user_id e restaurant_id", id));
 
@@ -201,11 +218,11 @@ public class PostService {
             responseDto.setImageUrl(imageUrl);
         }
 
-        if(post.getUserId() != null) {
-            // Verifica se o usuário curtiu essa publicação
-            PostLike postLike = this.postLikeService.getByUserIdAndPostId(post.getUserId(), post.getId());
-            if(postLike != null) responseDto.setPostLikeId(postLike.getId());
+        // Verifica se o usuário curtiu essa publicação
+        Boolean isLiked = postIsLiked(authUserId, post.getId());
+        responseDto.setLiked(isLiked);
 
+        if(post.getUserId() != null) {
             User user = userService.getById(post.getUserId());
             responseDto.setUserName(user.getName());
         }

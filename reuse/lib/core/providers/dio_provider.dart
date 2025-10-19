@@ -28,7 +28,7 @@ Dio dio(Ref ref) {
   // Adiciona os interceptors à instância do Dio.
   dio.interceptors.addAll([
     AuthInterceptor(storageService),
-    ErrorInterceptor(logger),
+    ErrorInterceptor(logger, ref),
   ]);
 
   return dio;

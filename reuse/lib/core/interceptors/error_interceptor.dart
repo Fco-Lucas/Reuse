@@ -1,14 +1,23 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:reuse/core/errors/api_exception.dart';
+import 'package:reuse/features/auth/presentation/providers/auth_provider.dart';
 
 class ErrorInterceptor extends Interceptor {
   final Logger _logger;
-  ErrorInterceptor(this._logger);
+  final Ref _ref;
+
+  ErrorInterceptor(this._logger, this._ref);
 
   // O onError é chamado automaticamente pelo Dio quando uma requisição falha
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    // Verifica se o erro é uma resposta da API com status 401 (Não Autorizado)
+    if (err.response?.statusCode == 401) {
+      _ref.read(authProvider.notifier).logout();
+    }
+
     // Verifica se o erro tem uma resposta da API
     if (err.response != null && err.response!.data != null) {
       final responseData = err.response!.data;

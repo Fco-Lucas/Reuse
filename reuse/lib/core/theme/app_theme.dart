@@ -27,23 +27,40 @@ class AppTheme {
         centerTitle: true,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: Colors.transparent, // ou um tom leve se quiser contraste
-        labelStyle: const TextStyle(color: Colors.white70),
-        hintStyle: const TextStyle(color: Colors.white54),
+        // Cor do ícone e do label quando o campo está focado
+        focusColor: Colors.white,
+        // Estilo do label (Name, Email, etc.)
+        labelStyle: const TextStyle(color: Colors.white70, fontSize: 16),
+        // Cor dos ícones
         prefixIconColor: Colors.white70,
-        suffixIconColor: Colors.white70,
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white70),
-          borderRadius: BorderRadius.circular(12),
+        // Remove o preenchimento de fundo
+        filled: false, 
+        // Borda quando o campo está habilitado (não focado)
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white54, width: 1.0),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(12),
+        // Borda quando o campo está focado (sendo editado)
+        focusedBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 1.5),
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+        // Borda em caso de erro
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.red.shade400, width: 1.5),
         ),
+        // Borda focada em caso de erro
+        focusedErrorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.red.shade400, width: 2.0),
+        ),
+      ),
+      textSelectionTheme: const TextSelectionThemeData(
+        // Esta é a propriedade que você procura
+        cursorColor: Colors.white, 
+        
+        // Dica: Você também pode mudar a cor do texto selecionado aqui
+        selectionColor: Colors.white24, 
+        
+        // E a cor das alças de seleção
+        selectionHandleColor: Colors.white,
       ),
       useMaterial3: true, // Extremamente necessário
     );

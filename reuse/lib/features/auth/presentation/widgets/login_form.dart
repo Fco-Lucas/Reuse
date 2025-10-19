@@ -55,7 +55,6 @@ class _LoginFormState extends State<LoginForm> {
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
               labelText: 'CPF ou CNPJ',
-              border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.badge_outlined),
             ),
             onChanged: (value) {
@@ -88,7 +87,6 @@ class _LoginFormState extends State<LoginForm> {
             obscureText: !_isPasswordVisible,
             decoration: InputDecoration(
               labelText: 'Senha',
-              border: const OutlineInputBorder(),
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
                 icon: Icon(_isPasswordVisible ? Icons.visibility_off : Icons.visibility),

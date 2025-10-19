@@ -43,7 +43,7 @@ class MainScaffold extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
       appBar: AppBar(
-        title: const Text('GestorPay'),
+        title: const Text('REAPROVEITA+', style: TextStyle(fontFamily: "Anton"),),
         actions: [
           IconButton(
             onPressed: () {
@@ -68,8 +68,8 @@ class MainScaffold extends ConsumerWidget {
             label: 'Resgatados',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_box_outlined),
-            activeIcon: Icon(Icons.account_box),
+            icon: Icon(Icons.account_circle_outlined),
+            activeIcon: Icon(Icons.account_circle),
             label: 'Perfil',
           ),
         ],

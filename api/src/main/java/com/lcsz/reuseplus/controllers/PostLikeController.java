@@ -18,7 +18,7 @@ public class PostLikeController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/like")
     public ResponseEntity<PostLike> likePost (
         @PathVariable Long postId
     ) {
@@ -26,13 +26,11 @@ public class PostLikeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    @PatchMapping("{postLikeId}")
+    @PostMapping("/unlike")
     public ResponseEntity<PostLike> unLikePost (
-            @PathVariable Long postId,
-            @PathVariable Long postLikeId
+            @PathVariable Long postId
     ) {
-        PostLikeUpdateDto updateDto = new PostLikeUpdateDto(PostLikeStatus.INACTIVE);
-        PostLike responseDto = service.update(postLikeId, updateDto);
+        PostLike responseDto = service.unLikePostForAuthUser(postId);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 }

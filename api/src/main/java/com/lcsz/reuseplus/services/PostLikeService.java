@@ -46,6 +46,12 @@ public class PostLikeService {
         return repository.save(entity);
     }
 
+    public PostLike unLikePostForAuthUser (Long postId) {
+        UUID authUserId = authenticatedUserProvider.getAuthenticatedUserId();
+        PostLike postlike = getByUserIdAndPostId(authUserId, postId);
+        return update(postlike.getId(), new PostLikeUpdateDto(PostLikeStatus.INACTIVE));
+    }
+
     public PostLike getById (Long id) {
         return repository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("PostLike com ID: %s não encontrado", id))

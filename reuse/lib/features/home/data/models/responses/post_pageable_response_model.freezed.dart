@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PostPageableResponseModel {
 
- List<PostResponseModel> get content; bool get first; bool get end; int get page; int get size; int get pageElements; int get totalPages; int get totalElements;
+ List<PostListResponseModel> get content; bool get first; bool get end; int get page; int get size; int get pageElements; int get totalPages; int get totalElements;
 /// Create a copy of PostPageableResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $PostPageableResponseModelCopyWith<$Res>  {
   factory $PostPageableResponseModelCopyWith(PostPageableResponseModel value, $Res Function(PostPageableResponseModel) _then) = _$PostPageableResponseModelCopyWithImpl;
 @useResult
 $Res call({
- List<PostResponseModel> content, bool first, bool end, int page, int size, int pageElements, int totalPages, int totalElements
+ List<PostListResponseModel> content, bool first, bool end, int page, int size, int pageElements, int totalPages, int totalElements
 });
 
 
@@ -68,7 +68,7 @@ class _$PostPageableResponseModelCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? content = null,Object? first = null,Object? end = null,Object? page = null,Object? size = null,Object? pageElements = null,Object? totalPages = null,Object? totalElements = null,}) {
   return _then(_self.copyWith(
 content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
-as List<PostResponseModel>,first: null == first ? _self.first : first // ignore: cast_nullable_to_non_nullable
+as List<PostListResponseModel>,first: null == first ? _self.first : first // ignore: cast_nullable_to_non_nullable
 as bool,end: null == end ? _self.end : end // ignore: cast_nullable_to_non_nullable
 as bool,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
 as int,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
@@ -160,7 +160,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PostResponseModel> content,  bool first,  bool end,  int page,  int size,  int pageElements,  int totalPages,  int totalElements)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PostListResponseModel> content,  bool first,  bool end,  int page,  int size,  int pageElements,  int totalPages,  int totalElements)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostPageableResponseModel() when $default != null:
 return $default(_that.content,_that.first,_that.end,_that.page,_that.size,_that.pageElements,_that.totalPages,_that.totalElements);case _:
@@ -181,7 +181,7 @@ return $default(_that.content,_that.first,_that.end,_that.page,_that.size,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PostResponseModel> content,  bool first,  bool end,  int page,  int size,  int pageElements,  int totalPages,  int totalElements)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PostListResponseModel> content,  bool first,  bool end,  int page,  int size,  int pageElements,  int totalPages,  int totalElements)  $default,) {final _that = this;
 switch (_that) {
 case _PostPageableResponseModel():
 return $default(_that.content,_that.first,_that.end,_that.page,_that.size,_that.pageElements,_that.totalPages,_that.totalElements);case _:
@@ -201,7 +201,7 @@ return $default(_that.content,_that.first,_that.end,_that.page,_that.size,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PostResponseModel> content,  bool first,  bool end,  int page,  int size,  int pageElements,  int totalPages,  int totalElements)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PostListResponseModel> content,  bool first,  bool end,  int page,  int size,  int pageElements,  int totalPages,  int totalElements)?  $default,) {final _that = this;
 switch (_that) {
 case _PostPageableResponseModel() when $default != null:
 return $default(_that.content,_that.first,_that.end,_that.page,_that.size,_that.pageElements,_that.totalPages,_that.totalElements);case _:
@@ -216,11 +216,11 @@ return $default(_that.content,_that.first,_that.end,_that.page,_that.size,_that.
 @JsonSerializable()
 
 class _PostPageableResponseModel implements PostPageableResponseModel {
-  const _PostPageableResponseModel({required final  List<PostResponseModel> content, required this.first, required this.end, required this.page, required this.size, required this.pageElements, required this.totalPages, required this.totalElements}): _content = content;
+  const _PostPageableResponseModel({required final  List<PostListResponseModel> content, required this.first, required this.end, required this.page, required this.size, required this.pageElements, required this.totalPages, required this.totalElements}): _content = content;
   factory _PostPageableResponseModel.fromJson(Map<String, dynamic> json) => _$PostPageableResponseModelFromJson(json);
 
- final  List<PostResponseModel> _content;
-@override List<PostResponseModel> get content {
+ final  List<PostListResponseModel> _content;
+@override List<PostListResponseModel> get content {
   if (_content is EqualUnmodifiableListView) return _content;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_content);
@@ -267,7 +267,7 @@ abstract mixin class _$PostPageableResponseModelCopyWith<$Res> implements $PostP
   factory _$PostPageableResponseModelCopyWith(_PostPageableResponseModel value, $Res Function(_PostPageableResponseModel) _then) = __$PostPageableResponseModelCopyWithImpl;
 @override @useResult
 $Res call({
- List<PostResponseModel> content, bool first, bool end, int page, int size, int pageElements, int totalPages, int totalElements
+ List<PostListResponseModel> content, bool first, bool end, int page, int size, int pageElements, int totalPages, int totalElements
 });
 
 
@@ -287,7 +287,7 @@ class __$PostPageableResponseModelCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? content = null,Object? first = null,Object? end = null,Object? page = null,Object? size = null,Object? pageElements = null,Object? totalPages = null,Object? totalElements = null,}) {
   return _then(_PostPageableResponseModel(
 content: null == content ? _self._content : content // ignore: cast_nullable_to_non_nullable
-as List<PostResponseModel>,first: null == first ? _self.first : first // ignore: cast_nullable_to_non_nullable
+as List<PostListResponseModel>,first: null == first ? _self.first : first // ignore: cast_nullable_to_non_nullable
 as bool,end: null == end ? _self.end : end // ignore: cast_nullable_to_non_nullable
 as bool,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
 as int,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable

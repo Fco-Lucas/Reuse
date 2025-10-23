@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PostResponseModel {
 
- int get id; bool get liked; String? get userId; String? get userName; String? get restaurantId; String? get restaurantName; String get name; int get amount; int get amountRedemption; DateTime get validUntil; String? get imageUrl; PostStatusEnum get status;
+ int get id; bool get liked; String? get userId; String? get userName; String? get restaurantId; String? get restaurantName; String get name; int get amount; int get amountRedemption; DateTime get validUntil; DateTime get createdAt; String get address; String get description; String? get imageUrl; PostStatusEnum get status;
 /// Create a copy of PostResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PostResponseModelCopyWith<PostResponseModel> get copyWith => _$PostResponseMode
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostResponseModel&&(identical(other.id, id) || other.id == id)&&(identical(other.liked, liked) || other.liked == liked)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.restaurantId, restaurantId) || other.restaurantId == restaurantId)&&(identical(other.restaurantName, restaurantName) || other.restaurantName == restaurantName)&&(identical(other.name, name) || other.name == name)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.amountRedemption, amountRedemption) || other.amountRedemption == amountRedemption)&&(identical(other.validUntil, validUntil) || other.validUntil == validUntil)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostResponseModel&&(identical(other.id, id) || other.id == id)&&(identical(other.liked, liked) || other.liked == liked)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.restaurantId, restaurantId) || other.restaurantId == restaurantId)&&(identical(other.restaurantName, restaurantName) || other.restaurantName == restaurantName)&&(identical(other.name, name) || other.name == name)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.amountRedemption, amountRedemption) || other.amountRedemption == amountRedemption)&&(identical(other.validUntil, validUntil) || other.validUntil == validUntil)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.address, address) || other.address == address)&&(identical(other.description, description) || other.description == description)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,liked,userId,userName,restaurantId,restaurantName,name,amount,amountRedemption,validUntil,imageUrl,status);
+int get hashCode => Object.hash(runtimeType,id,liked,userId,userName,restaurantId,restaurantName,name,amount,amountRedemption,validUntil,createdAt,address,description,imageUrl,status);
 
 @override
 String toString() {
-  return 'PostResponseModel(id: $id, liked: $liked, userId: $userId, userName: $userName, restaurantId: $restaurantId, restaurantName: $restaurantName, name: $name, amount: $amount, amountRedemption: $amountRedemption, validUntil: $validUntil, imageUrl: $imageUrl, status: $status)';
+  return 'PostResponseModel(id: $id, liked: $liked, userId: $userId, userName: $userName, restaurantId: $restaurantId, restaurantName: $restaurantName, name: $name, amount: $amount, amountRedemption: $amountRedemption, validUntil: $validUntil, createdAt: $createdAt, address: $address, description: $description, imageUrl: $imageUrl, status: $status)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PostResponseModelCopyWith<$Res>  {
   factory $PostResponseModelCopyWith(PostResponseModel value, $Res Function(PostResponseModel) _then) = _$PostResponseModelCopyWithImpl;
 @useResult
 $Res call({
- int id, bool liked, String? userId, String? userName, String? restaurantId, String? restaurantName, String name, int amount, int amountRedemption, DateTime validUntil, String? imageUrl, PostStatusEnum status
+ int id, bool liked, String? userId, String? userName, String? restaurantId, String? restaurantName, String name, int amount, int amountRedemption, DateTime validUntil, DateTime createdAt, String address, String description, String? imageUrl, PostStatusEnum status
 });
 
 
@@ -65,7 +65,7 @@ class _$PostResponseModelCopyWithImpl<$Res>
 
 /// Create a copy of PostResponseModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? liked = null,Object? userId = freezed,Object? userName = freezed,Object? restaurantId = freezed,Object? restaurantName = freezed,Object? name = null,Object? amount = null,Object? amountRedemption = null,Object? validUntil = null,Object? imageUrl = freezed,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? liked = null,Object? userId = freezed,Object? userName = freezed,Object? restaurantId = freezed,Object? restaurantName = freezed,Object? name = null,Object? amount = null,Object? amountRedemption = null,Object? validUntil = null,Object? createdAt = null,Object? address = null,Object? description = null,Object? imageUrl = freezed,Object? status = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,liked: null == liked ? _self.liked : liked // ignore: cast_nullable_to_non_nullable
@@ -77,7 +77,10 @@ as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_no
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as int,amountRedemption: null == amountRedemption ? _self.amountRedemption : amountRedemption // ignore: cast_nullable_to_non_nullable
 as int,validUntil: null == validUntil ? _self.validUntil : validUntil // ignore: cast_nullable_to_non_nullable
-as DateTime,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as DateTime,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as PostStatusEnum,
   ));
@@ -164,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  bool liked,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  int amount,  int amountRedemption,  DateTime validUntil,  String? imageUrl,  PostStatusEnum status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  bool liked,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  int amount,  int amountRedemption,  DateTime validUntil,  DateTime createdAt,  String address,  String description,  String? imageUrl,  PostStatusEnum status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostResponseModel() when $default != null:
-return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restaurantId,_that.restaurantName,_that.name,_that.amount,_that.amountRedemption,_that.validUntil,_that.imageUrl,_that.status);case _:
+return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restaurantId,_that.restaurantName,_that.name,_that.amount,_that.amountRedemption,_that.validUntil,_that.createdAt,_that.address,_that.description,_that.imageUrl,_that.status);case _:
   return orElse();
 
 }
@@ -185,10 +188,10 @@ return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restauran
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  bool liked,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  int amount,  int amountRedemption,  DateTime validUntil,  String? imageUrl,  PostStatusEnum status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  bool liked,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  int amount,  int amountRedemption,  DateTime validUntil,  DateTime createdAt,  String address,  String description,  String? imageUrl,  PostStatusEnum status)  $default,) {final _that = this;
 switch (_that) {
 case _PostResponseModel():
-return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restaurantId,_that.restaurantName,_that.name,_that.amount,_that.amountRedemption,_that.validUntil,_that.imageUrl,_that.status);case _:
+return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restaurantId,_that.restaurantName,_that.name,_that.amount,_that.amountRedemption,_that.validUntil,_that.createdAt,_that.address,_that.description,_that.imageUrl,_that.status);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +208,10 @@ return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restauran
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  bool liked,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  int amount,  int amountRedemption,  DateTime validUntil,  String? imageUrl,  PostStatusEnum status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  bool liked,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  int amount,  int amountRedemption,  DateTime validUntil,  DateTime createdAt,  String address,  String description,  String? imageUrl,  PostStatusEnum status)?  $default,) {final _that = this;
 switch (_that) {
 case _PostResponseModel() when $default != null:
-return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restaurantId,_that.restaurantName,_that.name,_that.amount,_that.amountRedemption,_that.validUntil,_that.imageUrl,_that.status);case _:
+return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restaurantId,_that.restaurantName,_that.name,_that.amount,_that.amountRedemption,_that.validUntil,_that.createdAt,_that.address,_that.description,_that.imageUrl,_that.status);case _:
   return null;
 
 }
@@ -220,7 +223,7 @@ return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restauran
 @JsonSerializable()
 
 class _PostResponseModel implements PostResponseModel {
-  const _PostResponseModel({required this.id, required this.liked, required this.userId, required this.userName, required this.restaurantId, required this.restaurantName, required this.name, required this.amount, required this.amountRedemption, required this.validUntil, required this.imageUrl, required this.status});
+  const _PostResponseModel({required this.id, required this.liked, required this.userId, required this.userName, required this.restaurantId, required this.restaurantName, required this.name, required this.amount, required this.amountRedemption, required this.validUntil, required this.createdAt, required this.address, required this.description, required this.imageUrl, required this.status});
   factory _PostResponseModel.fromJson(Map<String, dynamic> json) => _$PostResponseModelFromJson(json);
 
 @override final  int id;
@@ -233,6 +236,9 @@ class _PostResponseModel implements PostResponseModel {
 @override final  int amount;
 @override final  int amountRedemption;
 @override final  DateTime validUntil;
+@override final  DateTime createdAt;
+@override final  String address;
+@override final  String description;
 @override final  String? imageUrl;
 @override final  PostStatusEnum status;
 
@@ -249,16 +255,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostResponseModel&&(identical(other.id, id) || other.id == id)&&(identical(other.liked, liked) || other.liked == liked)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.restaurantId, restaurantId) || other.restaurantId == restaurantId)&&(identical(other.restaurantName, restaurantName) || other.restaurantName == restaurantName)&&(identical(other.name, name) || other.name == name)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.amountRedemption, amountRedemption) || other.amountRedemption == amountRedemption)&&(identical(other.validUntil, validUntil) || other.validUntil == validUntil)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostResponseModel&&(identical(other.id, id) || other.id == id)&&(identical(other.liked, liked) || other.liked == liked)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.restaurantId, restaurantId) || other.restaurantId == restaurantId)&&(identical(other.restaurantName, restaurantName) || other.restaurantName == restaurantName)&&(identical(other.name, name) || other.name == name)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.amountRedemption, amountRedemption) || other.amountRedemption == amountRedemption)&&(identical(other.validUntil, validUntil) || other.validUntil == validUntil)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.address, address) || other.address == address)&&(identical(other.description, description) || other.description == description)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.status, status) || other.status == status));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,liked,userId,userName,restaurantId,restaurantName,name,amount,amountRedemption,validUntil,imageUrl,status);
+int get hashCode => Object.hash(runtimeType,id,liked,userId,userName,restaurantId,restaurantName,name,amount,amountRedemption,validUntil,createdAt,address,description,imageUrl,status);
 
 @override
 String toString() {
-  return 'PostResponseModel(id: $id, liked: $liked, userId: $userId, userName: $userName, restaurantId: $restaurantId, restaurantName: $restaurantName, name: $name, amount: $amount, amountRedemption: $amountRedemption, validUntil: $validUntil, imageUrl: $imageUrl, status: $status)';
+  return 'PostResponseModel(id: $id, liked: $liked, userId: $userId, userName: $userName, restaurantId: $restaurantId, restaurantName: $restaurantName, name: $name, amount: $amount, amountRedemption: $amountRedemption, validUntil: $validUntil, createdAt: $createdAt, address: $address, description: $description, imageUrl: $imageUrl, status: $status)';
 }
 
 
@@ -269,7 +275,7 @@ abstract mixin class _$PostResponseModelCopyWith<$Res> implements $PostResponseM
   factory _$PostResponseModelCopyWith(_PostResponseModel value, $Res Function(_PostResponseModel) _then) = __$PostResponseModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, bool liked, String? userId, String? userName, String? restaurantId, String? restaurantName, String name, int amount, int amountRedemption, DateTime validUntil, String? imageUrl, PostStatusEnum status
+ int id, bool liked, String? userId, String? userName, String? restaurantId, String? restaurantName, String name, int amount, int amountRedemption, DateTime validUntil, DateTime createdAt, String address, String description, String? imageUrl, PostStatusEnum status
 });
 
 
@@ -286,7 +292,7 @@ class __$PostResponseModelCopyWithImpl<$Res>
 
 /// Create a copy of PostResponseModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? liked = null,Object? userId = freezed,Object? userName = freezed,Object? restaurantId = freezed,Object? restaurantName = freezed,Object? name = null,Object? amount = null,Object? amountRedemption = null,Object? validUntil = null,Object? imageUrl = freezed,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? liked = null,Object? userId = freezed,Object? userName = freezed,Object? restaurantId = freezed,Object? restaurantName = freezed,Object? name = null,Object? amount = null,Object? amountRedemption = null,Object? validUntil = null,Object? createdAt = null,Object? address = null,Object? description = null,Object? imageUrl = freezed,Object? status = null,}) {
   return _then(_PostResponseModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,liked: null == liked ? _self.liked : liked // ignore: cast_nullable_to_non_nullable
@@ -298,7 +304,10 @@ as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_no
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as int,amountRedemption: null == amountRedemption ? _self.amountRedemption : amountRedemption // ignore: cast_nullable_to_non_nullable
 as int,validUntil: null == validUntil ? _self.validUntil : validUntil // ignore: cast_nullable_to_non_nullable
-as DateTime,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as DateTime,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as PostStatusEnum,
   ));

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:reuse/core/widgets/error_state_widget.dart';
-import 'package:reuse/features/home/data/models/responses/post_response_model.dart';
+import 'package:reuse/features/home/data/models/responses/post_list_response_model.dart';
 import 'package:reuse/features/home/presentation/controller/home_action_state.dart';
 import 'package:reuse/features/home/presentation/controller/home_controller.dart';
 import 'package:reuse/features/home/presentation/controller/home_state.dart';
@@ -41,11 +42,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     await ref.read(homeControllerProvider.notifier).fetchInitialPosts();
   }
 
-  void onCardClick(PostResponseModel post) {
-    print(post.toString());
+  Future<void> onCardClick(PostListResponseModel post) async {
+    final postToSend = await ref.read(homeControllerProvider.notifier).onNavigateForRedemptionPostPage(post);
+    if(!mounted || postToSend == null) return;
+    context.push('/redemption-post', extra: postToSend);
   }
 
-  void onLikePressed(PostResponseModel post) {
+  void onLikePressed(PostListResponseModel post) {
     // Se já estiver curtido, descurte
     if (post.liked) {
       ref.read(homeControllerProvider.notifier).unLikePost(post);
@@ -63,8 +66,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (actionState == null) return;
 
       actionState.whenOrNull(
-        success: (message) => ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.green)),
+        // success: (message) => ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.green)),
         error: (message) => ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.red)),
       );

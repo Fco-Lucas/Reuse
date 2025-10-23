@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:reuse/features/home/data/models/responses/post_response_model.dart';
+import 'package:reuse/features/home/data/models/responses/post_list_response_model.dart';
 
 class PostCard extends StatelessWidget {
-  final PostResponseModel post;
+  final PostListResponseModel post;
   final VoidCallback onTap;
   final VoidCallback onLikePressed;
   final bool isLiked; // controla o estado visual do coração

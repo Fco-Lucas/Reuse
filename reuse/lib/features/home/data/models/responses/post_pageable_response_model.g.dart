@@ -10,7 +10,7 @@ _PostPageableResponseModel _$PostPageableResponseModelFromJson(
   Map<String, dynamic> json,
 ) => _PostPageableResponseModel(
   content: (json['content'] as List<dynamic>)
-      .map((e) => PostResponseModel.fromJson(e as Map<String, dynamic>))
+      .map((e) => PostListResponseModel.fromJson(e as Map<String, dynamic>))
       .toList(),
   first: json['first'] as bool,
   end: json['end'] as bool,

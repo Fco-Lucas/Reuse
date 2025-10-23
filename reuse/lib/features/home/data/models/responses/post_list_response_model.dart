@@ -1,12 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:reuse/features/home/data/enums/post_status_enum.dart';
 
-part 'post_response_model.freezed.dart';
-part 'post_response_model.g.dart';
+part 'post_list_response_model.freezed.dart';
+part 'post_list_response_model.g.dart';
 
 @freezed
-abstract class PostResponseModel with _$PostResponseModel {
-  const factory PostResponseModel({
+abstract class PostListResponseModel with _$PostListResponseModel {
+  const factory PostListResponseModel({
     required int id, 
     required bool liked,
     required String? userId, 
@@ -17,13 +17,10 @@ abstract class PostResponseModel with _$PostResponseModel {
     required int amount,
     required int amountRedemption,
     required DateTime validUntil,
-    required DateTime createdAt,
-    required String address,
-    required String description,
     required String? imageUrl,
     required PostStatusEnum status,
-  }) = _PostResponseModel;
+  }) = _PostListResponseModel;
 
-  factory PostResponseModel.fromJson(Map<String, dynamic> json) =>
-    _$PostResponseModelFromJson(json);
+  factory PostListResponseModel.fromJson(Map<String, dynamic> json) =>
+    _$PostListResponseModelFromJson(json);
 }

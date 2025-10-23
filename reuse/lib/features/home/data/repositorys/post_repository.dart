@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:reuse/core/providers/dio_provider.dart';
 import 'package:reuse/features/home/data/models/responses/post_pageable_response_model.dart';
+import 'package:reuse/features/home/data/models/responses/post_response_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'post_repository.g.dart';
@@ -19,5 +20,10 @@ class PostRepository {
   Future<PostPageableResponseModel> getAllPostsPageable({ required int page, required int size }) async {
     final response = await _dio.get("/posts?page=$page&size=$size");
     return PostPageableResponseModel.fromJson(response.data);
+  }
+
+  Future<PostResponseModel> getPostById({ required int postId }) async {
+    final response = await _dio.get("/posts/$postId");
+    return PostResponseModel.fromJson(response.data);
   }
 }

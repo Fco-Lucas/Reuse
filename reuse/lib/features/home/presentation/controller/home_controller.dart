@@ -1,5 +1,7 @@
 import 'package:reuse/core/errors/api_exception.dart';
+import 'package:reuse/core/utils/dialog.dart';
 import 'package:reuse/features/home/data/enums/home_page_actions.dart';
+import 'package:reuse/features/home/data/models/responses/post_list_response_model.dart';
 import 'package:reuse/features/home/data/models/responses/post_response_model.dart';
 import 'package:reuse/features/home/data/repositorys/post_like_repository.dart';
 import 'package:reuse/features/home/data/repositorys/post_repository.dart';
@@ -89,7 +91,7 @@ class HomeController extends _$HomeController {
     );
   }
 
-  Future<void> likePost(PostResponseModel post) async {
+  Future<void> likePost(PostListResponseModel post) async {
     await state.maybeMap(
       data: (currentState) async {
         final optimisticallyUpdatedPosts = currentState.posts.map((p) {
@@ -124,7 +126,7 @@ class HomeController extends _$HomeController {
     );
   }
 
-  Future<void> unLikePost(PostResponseModel post) async {
+  Future<void> unLikePost(PostListResponseModel post) async {
     await state.maybeMap(
       data: (currentState) async {
         // Lógica idêntica, mas para descurtir.
@@ -159,4 +161,29 @@ class HomeController extends _$HomeController {
     );
   }
 
+  Future<PostResponseModel?> onNavigateForRedemptionPostPage(PostListResponseModel post) async {
+    return await state.maybeMap(
+      data: (currentState) async {
+        try {
+          DialogUtils.showLoadingDialog(ref, text: 'Buscando informações...');
+
+          final postRepository = ref.read(postRepositoryProvider);
+          final response = await postRepository.getPostById(postId: post.id);
+          return response;
+        } catch (e) {
+          state = currentState.copyWith(
+            actionState: HomeActionState.error(
+              e is ApiException ? e.message : 'Ocorreu um erro inesperado.',
+            ),
+          );
+          return null;
+        } finally {
+          DialogUtils.hideLoadingDialog(ref);
+        }
+      },
+      orElse: () async {
+        return null;
+      },
+    );
+  }
 }

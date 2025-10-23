@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:reuse/core/widgets/empty_state_widget.dart';
-import 'package:reuse/features/home/data/models/responses/post_response_model.dart';
+import 'package:reuse/features/home/data/models/responses/post_list_response_model.dart';
 import 'package:reuse/features/home/presentation/widgets/post_card.dart';
 
 class InfinityScrollPost extends StatelessWidget {
   final Future<void> Function() onRefresh;
-  final void Function(PostResponseModel post) onCardClick;
-  final void Function(PostResponseModel post) onLikePressed;
+  final void Function(PostListResponseModel post) onCardClick;
+  final void Function(PostListResponseModel post) onLikePressed;
   final ScrollController scrollController;
-  final List<PostResponseModel> posts;
+  final List<PostListResponseModel> posts;
   final bool isLoadingMore;
 
   const InfinityScrollPost({

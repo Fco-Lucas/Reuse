@@ -5,7 +5,15 @@ class RedemptionPostCard extends StatelessWidget {
   final PostResponseModel post;
   final bool isLoading;
   final VoidCallback onRedemption;
-  const RedemptionPostCard({super.key, required this.post, required this.isLoading, required this.onRedemption});
+  final VoidCallback onLikePressed;
+
+  const RedemptionPostCard({
+    super.key, 
+    required this.post, 
+    required this.isLoading, 
+    required this.onRedemption, 
+    required this.onLikePressed
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +82,7 @@ class RedemptionPostCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.share_location, color: Colors.grey, size: 18,), // Gostaria apenas da gota da localização
+                    const Icon(Icons.location_on, color: Colors.grey, size: 18,), // Gostaria apenas da gota da localização
                     const SizedBox(width: 5,),
                     Text(
                       post.address,
@@ -157,7 +165,7 @@ class RedemptionPostCard extends StatelessWidget {
             right: 8,
             child: InkWell(
               borderRadius: BorderRadius.circular(30),
-              onTap: () {},
+              onTap: onLikePressed,
               child: Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(

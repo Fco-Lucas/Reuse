@@ -42,7 +42,7 @@ final class RedemptionPostControllerProvider
 }
 
 String _$redemptionPostControllerHash() =>
-    r'7867be00f150fa9e05965d104e0deebcf6e01fbf';
+    r'2899bac4682b8211167e31c157b9aee9f41e24ac';
 
 abstract class _$RedemptionPostController
     extends $Notifier<RedemptionPostState> {

@@ -1,4 +1,5 @@
 import 'package:reuse/core/errors/api_exception.dart';
+import 'package:reuse/core/router/app_router.dart';
 import 'package:reuse/features/home/presentation/controller/home_controller.dart';
 import 'package:reuse/features/home/presentation/controller/redemption_post_state.dart';
 import 'package:reuse/features/redemptions/data/repositorys/post_redemption_repository.dart';
@@ -22,6 +23,7 @@ class RedemptionPostController extends _$RedemptionPostController {
 
       ref.invalidate(homeControllerProvider);
       state = const RedemptionPostState.success("Publicação resgatada com sucesso!");
+      ref.read(routerProvider).go("/redemptions");
 
     } on ApiException catch (e) {
       state = RedemptionPostState.error(e.message);

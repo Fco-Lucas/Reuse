@@ -222,8 +222,8 @@ return $default(_that.id,_that.liked,_that.userId,_that.userName,_that.restauran
 /// @nodoc
 @JsonSerializable()
 
-class _PostResponseModel implements PostResponseModel {
-  const _PostResponseModel({required this.id, required this.liked, required this.userId, required this.userName, required this.restaurantId, required this.restaurantName, required this.name, required this.amount, required this.amountRedemption, required this.validUntil, required this.createdAt, required this.address, required this.description, required this.imageUrl, required this.status});
+class _PostResponseModel extends PostResponseModel {
+  const _PostResponseModel({required this.id, required this.liked, required this.userId, required this.userName, required this.restaurantId, required this.restaurantName, required this.name, required this.amount, required this.amountRedemption, required this.validUntil, required this.createdAt, required this.address, required this.description, required this.imageUrl, required this.status}): super._();
   factory _PostResponseModel.fromJson(Map<String, dynamic> json) => _$PostResponseModelFromJson(json);
 
 @override final  int id;

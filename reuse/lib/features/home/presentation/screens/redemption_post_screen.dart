@@ -1,7 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reuse/features/auth/presentation/providers/auth_provider.dart';
 import 'package:reuse/features/home/data/models/responses/post_response_model.dart';
+import 'package:reuse/features/home/presentation/controller/home_controller.dart';
+import 'package:reuse/features/home/presentation/controller/home_state.dart';
 import 'package:reuse/features/home/presentation/controller/redemption_post_controller.dart';
 import 'package:reuse/features/home/presentation/controller/redemption_post_state.dart';
 import 'package:reuse/features/home/presentation/widgets/redemption_post_card.dart';
@@ -30,6 +33,37 @@ class _RedemptionPostPageState extends ConsumerState<RedemptionPostScreen> {
       );
     });
 
+    // Assiste ao homeController para pegar o status de 'liked' ao vivo
+    final homeState = ref.watch(homeControllerProvider);
+
+    // Encontra a versão mais recente do post na lista
+    final PostResponseModel livePost = homeState.maybeWhen(
+      data: (posts, _, __, ___, ____) {
+        final postFromList = posts.firstWhereOrNull(
+          (p) => p.id == widget.post.id,
+        );
+
+        if (postFromList != null) {
+          return widget.post.copyWith(liked: postFromList.liked);
+        }
+
+        // Se não encontrou (postFromList é null), usa o post original
+        return widget.post;
+      },
+      orElse: () => widget.post, // Fallback se o estado não for 'data'
+    );
+
+    void onLikePressed() {
+      // 4. USE O MAPPER para converter o tipo!
+      final postForController = livePost.toPostListResponseModel();
+
+      if (postForController.liked) {
+        ref.read(homeControllerProvider.notifier).unLikePost(postForController);
+      } else {
+        ref.read(homeControllerProvider.notifier).likePost(postForController);
+      }
+    }
+
     final state = ref.watch(redemptionPostControllerProvider);
     final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
     
@@ -49,7 +83,7 @@ class _RedemptionPostPageState extends ConsumerState<RedemptionPostScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
-            child: RedemptionPostCard(post: widget.post, isLoading: isLoading, onRedemption: onRedemption),
+            child: RedemptionPostCard(post: livePost, isLoading: isLoading, onRedemption: onRedemption, onLikePressed: onLikePressed,),
           )
         )
       ),

@@ -5,6 +5,7 @@ import com.lcsz.reuseplus.dtos.posts.PostCreateDto;
 import com.lcsz.reuseplus.dtos.posts.PostListResponseDto;
 import com.lcsz.reuseplus.dtos.posts.PostResponseDto;
 import com.lcsz.reuseplus.mappers.PageableMapper;
+import com.lcsz.reuseplus.repositorys.projections.PostRedemptionProjection;
 import com.lcsz.reuseplus.services.PostService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
 
 
 @RestController
@@ -40,6 +43,15 @@ public class PostController {
     ) {
         Page<PostListResponseDto> responseDto = service.getAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(PageableMapper.toDto(responseDto));
+    }
+
+    @GetMapping("/redemptions/{userId}")
+    public ResponseEntity<PageableDto> getAllRedemptionsByUser (
+            Pageable pageable,
+            @PathVariable UUID userId
+    ) {
+        Page<PostRedemptionProjection> projections = service.getAllRedemptionsByUser(pageable, userId);
+        return ResponseEntity.status(HttpStatus.OK).body(PageableMapper.toDto(projections));
     }
 
     @GetMapping("/{id}")

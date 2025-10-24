@@ -15,6 +15,7 @@ import com.lcsz.reuseplus.models.Restaurant;
 import com.lcsz.reuseplus.models.User;
 import com.lcsz.reuseplus.repositorys.PostRepository;
 import com.lcsz.reuseplus.repositorys.projections.PostProjection;
+import com.lcsz.reuseplus.repositorys.projections.PostRedemptionProjection;
 import com.lcsz.reuseplus.security.AuthenticatedUserProvider;
 import com.lcsz.reuseplus.utils.PostUtils;
 import org.springframework.data.domain.Page;
@@ -39,14 +40,16 @@ public class PostService {
     private final UserService userService;
     private final RestaurantService restaurantService;
     private final PostLikeService postLikeService;
+    private final PostRedemptionService postRedemptionService;
     private final AppProperties appProperties;
 
-    public PostService(PostRepository repository, AuthenticatedUserProvider authUserProvider, UserService userService, RestaurantService restaurantService, PostLikeService postLikeService, AppProperties appProperties) {
+    public PostService(PostRepository repository, AuthenticatedUserProvider authUserProvider, UserService userService, RestaurantService restaurantService, PostLikeService postLikeService, PostRedemptionService postRedemptionService, AppProperties appProperties) {
         this.repository = repository;
         this.authUserProvider = authUserProvider;
         this.userService = userService;
         this.restaurantService = restaurantService;
         this.postLikeService = postLikeService;
+        this.postRedemptionService = postRedemptionService;
         this.appProperties = appProperties;
     }
 
@@ -163,6 +166,12 @@ public class PostService {
                     resolvedStatus
             );
         });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostRedemptionProjection> getAllRedemptionsByUser (Pageable pageable, UUID userId) {
+        User user = userService.getById(userId);
+        return postRedemptionService.getAllByUser(pageable, user.getId());
     }
 
     private PostStatus resolveStatus(PostProjection p) {

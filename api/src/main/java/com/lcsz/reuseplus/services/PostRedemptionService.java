@@ -8,6 +8,9 @@ import com.lcsz.reuseplus.models.PostRedemption;
 import com.lcsz.reuseplus.repositorys.PostRedemptionRepository;
 import com.lcsz.reuseplus.repositorys.projections.PostRedemptionProjection;
 import com.lcsz.reuseplus.security.AuthenticatedUserProvider;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +22,7 @@ public class PostRedemptionService {
     private final PostService postService;
     private final AuthenticatedUserProvider authenticatedUserProvider;
 
-    public PostRedemptionService(PostRedemptionRepository repository, PostService postService, AuthenticatedUserProvider authenticatedUserProvider) {
+    public PostRedemptionService(PostRedemptionRepository repository, @Lazy PostService postService, AuthenticatedUserProvider authenticatedUserProvider) {
         this.repository = repository;
         this.postService = postService;
         this.authenticatedUserProvider = authenticatedUserProvider;
@@ -59,6 +62,14 @@ public class PostRedemptionService {
         entity.setStatus(PostRedemptionStatus.RESERVED);
 
         return repository.save(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostRedemptionProjection> getAllByUser (
+            Pageable pageable,
+            UUID userId
+    ) {
+        return repository.findAllByUserIdPageable(pageable, userId);
     }
 
     @Transactional(readOnly = true)

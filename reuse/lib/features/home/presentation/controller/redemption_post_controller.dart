@@ -24,7 +24,6 @@ class RedemptionPostController extends _$RedemptionPostController {
       ref.invalidate(homeControllerProvider);
       state = const RedemptionPostState.success("Publicação resgatada com sucesso!");
       ref.read(routerProvider).go("/redemptions");
-
     } on ApiException catch (e) {
       state = RedemptionPostState.error(e.message);
     } catch (e) {

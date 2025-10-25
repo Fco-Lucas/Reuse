@@ -8,8 +8,10 @@ import 'package:reuse/features/auth/presentation/screens/initial_screen.dart';
 import 'package:reuse/features/auth/presentation/screens/login_screen.dart';
 import 'package:reuse/features/auth/presentation/screens/register_screen.dart';
 import 'package:reuse/features/home/data/models/responses/post_response_model.dart';
+import 'package:reuse/features/home/data/models/responses/post_user_list_response_model.dart';
 import 'package:reuse/features/home/presentation/screens/home_screen.dart';
 import 'package:reuse/features/home/presentation/screens/redemption_post_screen.dart';
+import 'package:reuse/features/profile/presentation/screens/posts_screen.dart';
 import 'package:reuse/features/profile/presentation/screens/profile_screen.dart';
 import 'package:reuse/features/redemptions/presentation/screens/redemptions_screen.dart';
 import 'package:reuse/features/splash/splash_screen.dart';
@@ -60,6 +62,16 @@ GoRouter router(Ref ref) {
         builder: (context, state) {
           final post = state.extra as PostResponseModel;
           return RedemptionPostScreen(post: post);
+        },
+      ),
+      GoRoute(
+        path: '/user-posts',
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>; 
+          final userId = args['userId'] as String;
+          final postClicked = args['postClicked'] as PostUserListResponseModel;
+
+          return PostsScreen(userId: userId, postClicked: postClicked,);
         },
       ),
     ]

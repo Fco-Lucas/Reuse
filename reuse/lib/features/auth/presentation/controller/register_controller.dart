@@ -2,7 +2,7 @@ import 'package:reuse/core/errors/api_exception.dart';
 import 'package:reuse/core/providers/logger_provider.dart';
 import 'package:reuse/features/auth/presentation/controller/register_state.dart';
 import 'package:reuse/features/restaurants/data/models/requests/restaurant_create_request_model.dart';
-import 'package:reuse/features/restaurants/repositorys/restaurant_repository.dart';
+import 'package:reuse/features/restaurants/data/repositorys/restaurant_repository.dart';
 import 'package:reuse/features/users/data/models/requests/user_create_request_model.dart';
 import 'package:reuse/features/users/data/repositorys/user_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

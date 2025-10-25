@@ -21,4 +21,9 @@ class RestaurantRepository {
     final response = await _dio.post("/restaurants", data: data.toJson());
     return RestaurantResponseModel.fromJson(response.data);
   }
+
+  Future<RestaurantResponseModel> getRestaurantById({required String restaurantId}) async {
+    final response = await _dio.post("/restaurants/$restaurantId");
+    return RestaurantResponseModel.fromJson(response.data);
+  }
 }

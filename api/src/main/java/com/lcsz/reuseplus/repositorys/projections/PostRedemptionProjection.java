@@ -6,6 +6,7 @@ public interface PostRedemptionProjection {
     Long getPostRedemptionId();
     Long getPostId();
     LocalDateTime getRedemptionAt();
+    String getImageKey();
     String getPostName();
     String getRestaurantName();
     String getUserName();

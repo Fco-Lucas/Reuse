@@ -1,9 +1,11 @@
 package com.lcsz.reuseplus.controllers;
 
 import com.lcsz.reuseplus.dtos.PageableDto;
+import com.lcsz.reuseplus.dtos.postRedemptions.PostUserRedemptionResponseDto;
 import com.lcsz.reuseplus.dtos.posts.PostCreateDto;
 import com.lcsz.reuseplus.dtos.posts.PostListResponseDto;
 import com.lcsz.reuseplus.dtos.posts.PostResponseDto;
+import com.lcsz.reuseplus.dtos.posts.PostUserListResponseDto;
 import com.lcsz.reuseplus.mappers.PageableMapper;
 import com.lcsz.reuseplus.repositorys.projections.PostRedemptionProjection;
 import com.lcsz.reuseplus.services.PostService;
@@ -45,12 +47,21 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(PageableMapper.toDto(responseDto));
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<PageableDto> getAllByUserId (
+            Pageable pageable,
+            @PathVariable("userId") UUID userId
+    ) {
+        Page<PostUserListResponseDto> projections = service.getAllByUser(pageable, userId);
+        return ResponseEntity.status(HttpStatus.OK).body(PageableMapper.toDto(projections));
+    }
+
     @GetMapping("/redemptions/{userId}")
     public ResponseEntity<PageableDto> getAllRedemptionsByUser (
             Pageable pageable,
             @PathVariable UUID userId
     ) {
-        Page<PostRedemptionProjection> projections = service.getAllRedemptionsByUser(pageable, userId);
+        Page<PostUserRedemptionResponseDto> projections = service.getAllRedemptionsByUser(pageable, userId);
         return ResponseEntity.status(HttpStatus.OK).body(PageableMapper.toDto(projections));
     }
 

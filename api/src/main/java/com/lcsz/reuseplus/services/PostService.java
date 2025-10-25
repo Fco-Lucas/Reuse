@@ -2,9 +2,11 @@ package com.lcsz.reuseplus.services;
 
 import com.lcsz.reuseplus.AppProperties;
 import com.lcsz.reuseplus.dtos.AuthRole;
+import com.lcsz.reuseplus.dtos.postRedemptions.PostUserRedemptionResponseDto;
 import com.lcsz.reuseplus.dtos.posts.PostCreateDto;
 import com.lcsz.reuseplus.dtos.posts.PostListResponseDto;
 import com.lcsz.reuseplus.dtos.posts.PostResponseDto;
+import com.lcsz.reuseplus.dtos.posts.PostUserListResponseDto;
 import com.lcsz.reuseplus.enums.postLikes.PostLikeStatus;
 import com.lcsz.reuseplus.enums.posts.PostStatus;
 import com.lcsz.reuseplus.exceptions.customExceptions.EntityNotFoundException;
@@ -64,12 +66,12 @@ public class PostService {
         return postLike != null && postLike.getStatus().equals(PostLikeStatus.ACTIVE);
     }
 
-    private String getImageUrl (String imageKey) {
+    public String getImageUrl (String imageKey) {
         String imagesBaseUrl = appProperties.getBaseImagesUrl();
         return imagesBaseUrl + imageKey;
     }
 
-    private String getImagePath (String imageKey) {
+    public String getImagePath (String imageKey) {
         String imagesBasePath = appProperties.getBaseImagesPath();
         return imagesBasePath + imageKey;
     }
@@ -128,8 +130,11 @@ public class PostService {
 
         Post saved = repository.save(entity);
 
-        String imagePath = storePostImage(image, saved.getId());
-        saved.setImageKey(imagePath);
+        String imagePath = null;
+        if (image != null && !image.isEmpty()) {
+            imagePath = storePostImage(image, saved.getId());
+            saved.setImageKey(imagePath);
+        }
 
         return getByIdDto(saved.getId());
     }
@@ -169,7 +174,31 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostRedemptionProjection> getAllRedemptionsByUser (Pageable pageable, UUID userId) {
+    public Page<PostUserListResponseDto> getAllByUser (Pageable pageable, UUID userId) {
+
+        return repository.findAllByUserPageable(pageable, userId).map(p -> {
+            String imageUrl = null;
+            String imagePath = getImagePath(p.getImageKey());
+            if (PostUtils.fileExists(imagePath)) {
+                imageUrl = getImageUrl(p.getImageKey());
+            }
+            return new PostUserListResponseDto(
+                   p.getId(),
+                   p.getUserId(),
+                   p.getUserName(),
+                   p.getRestaurantId(),
+                   p.getRestaurantName(),
+                   p.getName(),
+                   p.getCreatedAt(),
+                   p.getAddress(),
+                   p.getDescription(),
+                   imageUrl
+            );
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostUserRedemptionResponseDto> getAllRedemptionsByUser (Pageable pageable, UUID userId) {
         User user = userService.getById(userId);
         return postRedemptionService.getAllByUser(pageable, user.getId());
     }

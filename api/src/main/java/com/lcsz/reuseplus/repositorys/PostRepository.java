@@ -2,6 +2,7 @@ package com.lcsz.reuseplus.repositorys;
 
 import com.lcsz.reuseplus.models.Post;
 import com.lcsz.reuseplus.repositorys.projections.PostProjection;
+import com.lcsz.reuseplus.repositorys.projections.PostUserListProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,10 +36,33 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                   FROM post_redemptions RD
                   WHERE RD.user_id = :authUserId
                     AND RD.post_id = P.id
-              );
+              )
+        ORDER BY P.id DESC
     """, nativeQuery = true)
     Page<PostProjection> findAllPageable(
             Pageable pageable,
             @Param("authUserId") UUID authUserId
+    );
+
+    @Query(value = """
+            SELECT 
+                P.id, 
+                P.user_id, 
+                U.name AS user_name, 
+                P.restaurant_id, 
+                R.name AS restaurant_name, 
+                P.name, 
+                P.created_at, 
+                P.address,
+                P.description,
+                P.image_key FROM posts P 
+                LEFT JOIN users U ON P.user_id = U.id
+                LEFT JOIN restaurants R ON P.restaurant_id = R.id
+             WHERE (P.user_id = :userId OR P.restaurant_id = :userId) AND P.status != 'INACTIVE'
+             ORDER BY P.id DESC
+            """, nativeQuery = true)
+    Page<PostUserListProjection> findAllByUserPageable (
+            Pageable pageable,
+            @Param("userId") UUID userId
     );
 }

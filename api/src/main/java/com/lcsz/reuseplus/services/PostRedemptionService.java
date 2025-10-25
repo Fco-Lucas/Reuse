@@ -1,6 +1,7 @@
 package com.lcsz.reuseplus.services;
 
 import com.lcsz.reuseplus.dtos.AuthRole;
+import com.lcsz.reuseplus.dtos.postRedemptions.PostUserRedemptionResponseDto;
 import com.lcsz.reuseplus.enums.postRedemptions.PostRedemptionStatus;
 import com.lcsz.reuseplus.exceptions.customExceptions.EntityNotFoundException;
 import com.lcsz.reuseplus.models.Post;
@@ -8,12 +9,14 @@ import com.lcsz.reuseplus.models.PostRedemption;
 import com.lcsz.reuseplus.repositorys.PostRedemptionRepository;
 import com.lcsz.reuseplus.repositorys.projections.PostRedemptionProjection;
 import com.lcsz.reuseplus.security.AuthenticatedUserProvider;
+import com.lcsz.reuseplus.utils.PostUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -65,11 +68,27 @@ public class PostRedemptionService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostRedemptionProjection> getAllByUser (
+    public Page<PostUserRedemptionResponseDto> getAllByUser (
             Pageable pageable,
             UUID userId
     ) {
-        return repository.findAllByUserIdPageable(pageable, userId);
+        return repository.findAllByUserIdPageable(pageable, userId).map(p -> {
+            String imageUrl = null;
+            String imagePath = postService.getImagePath(p.getImageKey());
+            if (PostUtils.fileExists(imagePath)) {
+                imageUrl = postService.getImageUrl(p.getImageKey());
+            }
+
+            return new PostUserRedemptionResponseDto(
+                    p.getPostRedemptionId(),
+                    p.getPostId(),
+                    p.getRedemptionAt(),
+                    imageUrl,
+                    p.getPostName(),
+                    p.getRestaurantName(),
+                    p.getUserName()
+            );
+        });
     }
 
     @Transactional(readOnly = true)

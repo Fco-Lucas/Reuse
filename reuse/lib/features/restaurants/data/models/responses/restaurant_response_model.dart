@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:reuse/features/restaurants/data/enums/restaurant_status_enum.dart';
 
 part 'restaurant_response_model.freezed.dart';
 part 'restaurant_response_model.g.dart';
@@ -10,7 +11,7 @@ abstract class RestaurantResponseModel with _$RestaurantResponseModel {
     required DateTime createdAt,
     required String name,
     required String cnpj,
-    required RestaurantResponseModel status,
+    required RestaurantStatusEnum status,
   }) = _RestaurantResponseModel;
 
   factory RestaurantResponseModel.fromJson(Map<String, dynamic> json) =>

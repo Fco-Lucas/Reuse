@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RestaurantResponseModel {
 
- String get id; DateTime get createdAt; String get name; String get cnpj; RestaurantResponseModel get status;
+ String get id; DateTime get createdAt; String get name; String get cnpj; RestaurantStatusEnum get status;
 /// Create a copy of RestaurantResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +48,11 @@ abstract mixin class $RestaurantResponseModelCopyWith<$Res>  {
   factory $RestaurantResponseModelCopyWith(RestaurantResponseModel value, $Res Function(RestaurantResponseModel) _then) = _$RestaurantResponseModelCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime createdAt, String name, String cnpj, RestaurantResponseModel status
+ String id, DateTime createdAt, String name, String cnpj, RestaurantStatusEnum status
 });
 
 
-$RestaurantResponseModelCopyWith<$Res> get status;
+
 
 }
 /// @nodoc
@@ -72,19 +72,10 @@ as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: 
 as DateTime,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,cnpj: null == cnpj ? _self.cnpj : cnpj // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as RestaurantResponseModel,
+as RestaurantStatusEnum,
   ));
 }
-/// Create a copy of RestaurantResponseModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$RestaurantResponseModelCopyWith<$Res> get status {
-  
-  return $RestaurantResponseModelCopyWith<$Res>(_self.status, (value) {
-    return _then(_self.copyWith(status: value));
-  });
-}
+
 }
 
 
@@ -166,7 +157,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  String name,  String cnpj,  RestaurantResponseModel status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  String name,  String cnpj,  RestaurantStatusEnum status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RestaurantResponseModel() when $default != null:
 return $default(_that.id,_that.createdAt,_that.name,_that.cnpj,_that.status);case _:
@@ -187,7 +178,7 @@ return $default(_that.id,_that.createdAt,_that.name,_that.cnpj,_that.status);cas
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  String name,  String cnpj,  RestaurantResponseModel status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime createdAt,  String name,  String cnpj,  RestaurantStatusEnum status)  $default,) {final _that = this;
 switch (_that) {
 case _RestaurantResponseModel():
 return $default(_that.id,_that.createdAt,_that.name,_that.cnpj,_that.status);case _:
@@ -207,7 +198,7 @@ return $default(_that.id,_that.createdAt,_that.name,_that.cnpj,_that.status);cas
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  String name,  String cnpj,  RestaurantResponseModel status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime createdAt,  String name,  String cnpj,  RestaurantStatusEnum status)?  $default,) {final _that = this;
 switch (_that) {
 case _RestaurantResponseModel() when $default != null:
 return $default(_that.id,_that.createdAt,_that.name,_that.cnpj,_that.status);case _:
@@ -229,7 +220,7 @@ class _RestaurantResponseModel implements RestaurantResponseModel {
 @override final  DateTime createdAt;
 @override final  String name;
 @override final  String cnpj;
-@override final  RestaurantResponseModel status;
+@override final  RestaurantStatusEnum status;
 
 /// Create a copy of RestaurantResponseModel
 /// with the given fields replaced by the non-null parameter values.
@@ -264,11 +255,11 @@ abstract mixin class _$RestaurantResponseModelCopyWith<$Res> implements $Restaur
   factory _$RestaurantResponseModelCopyWith(_RestaurantResponseModel value, $Res Function(_RestaurantResponseModel) _then) = __$RestaurantResponseModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime createdAt, String name, String cnpj, RestaurantResponseModel status
+ String id, DateTime createdAt, String name, String cnpj, RestaurantStatusEnum status
 });
 
 
-@override $RestaurantResponseModelCopyWith<$Res> get status;
+
 
 }
 /// @nodoc
@@ -288,20 +279,11 @@ as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: 
 as DateTime,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,cnpj: null == cnpj ? _self.cnpj : cnpj // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as RestaurantResponseModel,
+as RestaurantStatusEnum,
   ));
 }
 
-/// Create a copy of RestaurantResponseModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$RestaurantResponseModelCopyWith<$Res> get status {
-  
-  return $RestaurantResponseModelCopyWith<$Res>(_self.status, (value) {
-    return _then(_self.copyWith(status: value));
-  });
-}
+
 }
 
 // dart format on

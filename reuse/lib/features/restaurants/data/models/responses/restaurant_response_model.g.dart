@@ -13,9 +13,7 @@ _RestaurantResponseModel _$RestaurantResponseModelFromJson(
   createdAt: DateTime.parse(json['createdAt'] as String),
   name: json['name'] as String,
   cnpj: json['cnpj'] as String,
-  status: RestaurantResponseModel.fromJson(
-    json['status'] as Map<String, dynamic>,
-  ),
+  status: RestaurantStatusEnum.fromJson(json['status'] as String),
 );
 
 Map<String, dynamic> _$RestaurantResponseModelToJson(

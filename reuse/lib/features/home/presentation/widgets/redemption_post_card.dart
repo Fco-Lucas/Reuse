@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reuse/core/enums/auth_user_role.dart';
 import 'package:reuse/features/home/data/models/responses/post_response_model.dart';
 
 class RedemptionPostCard extends StatelessWidget {
@@ -6,13 +7,15 @@ class RedemptionPostCard extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onRedemption;
   final VoidCallback onLikePressed;
+  final AuthUserRole authUserRole;
 
   const RedemptionPostCard({
     super.key, 
     required this.post, 
     required this.isLoading, 
     required this.onRedemption, 
-    required this.onLikePressed
+    required this.onLikePressed,
+    required this.authUserRole
   });
 
   @override
@@ -140,7 +143,7 @@ class RedemptionPostCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10,),
-                ElevatedButton(
+                authUserRole == AuthUserRole.USER ? ElevatedButton(
                   onPressed: onRedemption,
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
@@ -156,11 +159,11 @@ class RedemptionPostCard extends StatelessWidget {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Text('Resgatar', style: TextStyle(fontSize: 16)),
-                ),
+                ) : Container()
               ],
             ),
           ),
-          Positioned(
+          authUserRole == AuthUserRole.USER ? Positioned(
             top: 8,
             right: 8,
             child: InkWell(
@@ -188,7 +191,7 @@ class RedemptionPostCard extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ) : Container()
         ],
       )
     );

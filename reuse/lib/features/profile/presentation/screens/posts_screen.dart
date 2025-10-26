@@ -51,7 +51,7 @@ class _PostsScreenState extends ConsumerState<PostsScreen> {
                   return const ErrorStateWidget(message: "Nenhum usuário ou restaurante encontrado com o ID fornecido");
                 }
 
-                return RestaurantPostsScreen();
+                return RestaurantPostsScreen(restaurantModel: restaurantModel, postClicked: widget.postClicked,);
               }, 
               error: (err, stack) => const ErrorStateWidget(message: "Erro ao verificar restaurant"), 
               loading: () => const Center(child: CircularProgressIndicator())

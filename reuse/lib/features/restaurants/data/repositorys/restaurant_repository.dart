@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:reuse/core/providers/dio_provider.dart';
 import 'package:reuse/features/restaurants/data/models/requests/restaurant_create_request_model.dart';
+import 'package:reuse/features/restaurants/data/models/requests/restaurant_update_request_model.dart';
 import 'package:reuse/features/restaurants/data/models/responses/restaurant_response_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -23,7 +24,12 @@ class RestaurantRepository {
   }
 
   Future<RestaurantResponseModel> getRestaurantById({required String restaurantId}) async {
-    final response = await _dio.post("/restaurants/$restaurantId");
+    final response = await _dio.get("/restaurants/$restaurantId");
+    return RestaurantResponseModel.fromJson(response.data);
+  }
+
+  Future<RestaurantResponseModel> updateRestaurant({required String restaurantId, required RestaurantUpdateRequestModel data}) async {
+    final response = await _dio.patch("/restaurants/$restaurantId", data: data.toJson());
     return RestaurantResponseModel.fromJson(response.data);
   }
 }

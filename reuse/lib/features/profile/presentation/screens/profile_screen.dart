@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reuse/core/widgets/error_state_widget.dart';
 import 'package:reuse/features/profile/data/models/user_profile_model.dart';
 import 'package:reuse/features/profile/presentation/providers/user_profile_provider.dart';
+import 'package:reuse/features/profile/presentation/screens/restaurant_profile_screen.dart';
 import 'package:reuse/features/profile/presentation/screens/user_profile_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -28,8 +29,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             return UserProfileScreen(userModel: userModel);
           }, 
           restaurant: (restaurantModel) {
-            // Crie a tela de perfil do restaurante aqui
-            return const Placeholder();
+            return RestaurantProfileScreen(restaurantModel: restaurantModel,);
           }
         );
       }

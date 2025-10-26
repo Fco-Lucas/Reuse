@@ -7,25 +7,25 @@ import 'package:reuse/core/utils/formaters.dart';
 import 'package:reuse/core/widgets/error_state_widget.dart';
 import 'package:reuse/features/home/data/models/requests/create_post_request_model.dart';
 import 'package:reuse/features/home/data/models/responses/post_user_list_response_model.dart';
-import 'package:reuse/features/profile/presentation/controllers/user_profile_action_state.dart';
-import 'package:reuse/features/profile/presentation/controllers/user_profile_controller.dart';
-import 'package:reuse/features/profile/presentation/controllers/user_profile_state.dart';
+import 'package:reuse/features/profile/presentation/controllers/restaurant_profile_action_state.dart';
+import 'package:reuse/features/profile/presentation/controllers/restaurant_profile_controller.dart';
+import 'package:reuse/features/profile/presentation/controllers/restaurant_profile_state.dart';
 import 'package:reuse/features/profile/presentation/widgets/create_post_bottom_sheet.dart';
 import 'package:reuse/features/profile/presentation/widgets/post_grid_view.dart';
-import 'package:reuse/features/profile/presentation/widgets/update_user_bottom_sheet.dart';
-import 'package:reuse/features/users/data/models/requests/user_update_request_model.dart';
-import 'package:reuse/features/users/data/models/responses/user_response_model.dart';
+import 'package:reuse/features/profile/presentation/widgets/update_restaurant_bottom_sheet.dart';
+import 'package:reuse/features/restaurants/data/models/requests/restaurant_update_request_model.dart';
+import 'package:reuse/features/restaurants/data/models/responses/restaurant_response_model.dart';
 
-class UserProfileScreen extends ConsumerStatefulWidget {
-  final UserResponseModel userModel;
+class RestaurantProfileScreen extends ConsumerStatefulWidget {
+  final RestaurantResponseModel restaurantModel;
 
-  const UserProfileScreen({super.key, required this.userModel});
+  const RestaurantProfileScreen({super.key, required this.restaurantModel});
 
   @override
-  ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
+  ConsumerState<RestaurantProfileScreen> createState() => _RestaurantProfileScreenState();
 }
 
-class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
+class _RestaurantProfileScreenState extends ConsumerState<RestaurantProfileScreen> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -38,14 +38,14 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
       // Lê o estado atual sem 'rebuildar'
-      final state = ref.read(userProfileControllerProvider(widget.userModel.id));
+      final state = ref.read(restaurantProfileControllerProvider(widget.restaurantModel.id));
       
       // Usa o 'maybeMap' para checar se estamos no estado 'data'
       // e se podemos carregar mais
       state.maybeMap(
         data: (dataState) {
           if (dataState.hasMorePages && !dataState.isLoadingMore) {
-            ref.read(userProfileControllerProvider(widget.userModel.id).notifier).fetchNextPage();
+            ref.read(restaurantProfileControllerProvider(widget.restaurantModel.id).notifier).fetchNextPage();
           }
         },
         orElse: () {},
@@ -61,7 +61,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   }
 
   void _onCreatePost(CreatePostRequestModel data, File? imageFile) {
-    ref.read(userProfileControllerProvider(widget.userModel.id).notifier).createPost(
+    ref.read(restaurantProfileControllerProvider(widget.restaurantModel.id).notifier).createPost(
       data: data,
       imageFile: imageFile, // Passe o arquivo
     );
@@ -78,11 +78,11 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     );
   }
 
-  void _onUpdateUser(UserUpdateRequestModel data) {
-    ref.read(userProfileControllerProvider(widget.userModel.id).notifier).updateUser(userId: widget.userModel.id, data: data);
+  void _onUpdateRestaurant(RestaurantUpdateRequestModel data) {
+    ref.read(restaurantProfileControllerProvider(widget.restaurantModel.id).notifier).updateRestaurant(restaurantId: widget.restaurantModel.id, data: data);
   }
 
-  void _showUpdateUserSheet() {
+  void _showUpdateRestaurantSheet() {
     showModalBottomSheet(
       backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
       context: context,
@@ -90,7 +90,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => UpdateUserBottomSheet(currentUserInfo: widget.userModel, onUpdateUser: _onUpdateUser)
+      builder: (_) => UpdateRestaurantBottomSheet(currentRestaurantInfo: widget.restaurantModel, onUpdateRestaurant: _onUpdateRestaurant)
     );
   }
 
@@ -98,7 +98,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     context.push(
       "/user-posts",
       extra: {
-        'userId': widget.userModel.id,
+        'userId': widget.restaurantModel.id,
         'postClicked': postClicked,
       }
     );
@@ -106,7 +106,10 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<UserProfileState>(userProfileControllerProvider(widget.userModel.id), (previous, next) {
+    final RestaurantResponseModel restaurantModel = widget.restaurantModel;
+    final textTheme = Theme.of(context).textTheme;
+
+    ref.listen<RestaurantProfileState>(restaurantProfileControllerProvider(restaurantModel.id), (previous, next) {
       // --- LÓGICA PARA OS EFEITOS DE AÇÃO (Criar novo post, atualizar perfil, etc.) ---
       final actionState = next.maybeMap(data: (d) => d.actionState, orElse: () => null);
       if (actionState == null) return;
@@ -114,19 +117,16 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
       actionState.whenOrNull(
         success: (message) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.green));
-          ref.read(userProfileControllerProvider(widget.userModel.id).notifier).resetActionState();
+          ref.read(restaurantProfileControllerProvider(restaurantModel.id).notifier).resetActionState();
         },
         error: (message) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.red));
-          ref.read(userProfileControllerProvider(widget.userModel.id).notifier).resetActionState();
+          ref.read(restaurantProfileControllerProvider(restaurantModel.id).notifier).resetActionState();
         },
       );
     });
 
-    final UserResponseModel userModel = widget.userModel;
-    final textTheme = Theme.of(context).textTheme;
-
-    final userProfileState = ref.watch(userProfileControllerProvider(widget.userModel.id));
+    final userProfileState = ref.watch(restaurantProfileControllerProvider(restaurantModel.id));
     final isInitial = userProfileState.maybeWhen(
       initial: () => true,
       orElse: () => false,
@@ -134,7 +134,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
     if (isInitial) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(userProfileControllerProvider(widget.userModel.id).notifier).fetchInitialPosts();
+        ref.read(restaurantProfileControllerProvider(restaurantModel.id).notifier).fetchInitialPosts();
       });
     }
 
@@ -167,7 +167,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        userModel.name,
+                        restaurantModel.name,
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold
@@ -176,7 +176,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        formatCpfCnpj(userModel.cpf),
+                        formatCpfCnpj(restaurantModel.cnpj),
                         style: textTheme.bodyMedium,
                       )
                     ],
@@ -190,7 +190,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: _showUpdateUserSheet,
+                    onPressed: _showUpdateRestaurantSheet,
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
                       minimumSize: const Size(0, 50),
@@ -230,7 +230,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
               ),
               error: (message) => ErrorStateWidget(
                 message: message,
-                onRetry: () => ref.read(userProfileControllerProvider(widget.userModel.id).notifier).fetchInitialPosts(),
+                onRetry: () => ref.read(restaurantProfileControllerProvider(restaurantModel.id).notifier).fetchInitialPosts(),
               ),
               data: (posts, hasMorePages, actionState, isLoadingMore, paginationError) {
                 if (posts.isEmpty) {

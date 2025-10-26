@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:reuse/core/providers/jwt_data_provider.dart';
 import 'package:reuse/core/widgets/error_state_widget.dart';
 import 'package:reuse/features/home/data/models/responses/post_list_response_model.dart';
 import 'package:reuse/features/home/presentation/controller/home_action_state.dart';
@@ -85,20 +86,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       });
     }
 
-    return homeState.when(
-      initial: () => const Center(child: CircularProgressIndicator()),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      data: (posts, hasMorePages, actionState, isLoadingMore, paginationError) {
-        return InfinityScrollPost(
-          onRefresh: onRefresh,
-          onLikePressed: (post) => onLikePressed(post),
-          onCardClick: (post) => onCardClick(post),
-          scrollController: _scrollController,
-          posts: posts,
-          isLoadingMore: isLoadingMore
+    final jwtAsyncValue = ref.read(jwtDataProvider);
+
+    return jwtAsyncValue.when(
+      loading: () => const Center(child: CircularProgressIndicator(),),
+      error: (err, stack) => ErrorStateWidget(message: "Informações do usuário autenticado não encontrado"),
+      data: (jwtData) {
+        final authUserRole = jwtData?.role;
+        if (authUserRole == null) return ErrorStateWidget(message: "Cargo do usuário autenticado não encontrado");
+
+        return homeState.when(
+          initial: () => const Center(child: CircularProgressIndicator()),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          data: (posts, hasMorePages, actionState, isLoadingMore, paginationError) {
+            return InfinityScrollPost(
+              onRefresh: onRefresh,
+              onLikePressed: (post) => onLikePressed(post),
+              onCardClick: (post) => onCardClick(post),
+              scrollController: _scrollController,
+              posts: posts,
+              isLoadingMore: isLoadingMore,
+              authUserRole: authUserRole,
+            );
+          },
+          error: (message) => ErrorStateWidget(message: message, onRetry: () => ref.read(homeControllerProvider.notifier).fetchInitialPosts(),),
         );
-      },
-      error: (message) => ErrorStateWidget(message: message, onRetry: () => ref.read(homeControllerProvider.notifier).fetchInitialPosts(),),
+      }, 
     );
   }
 }

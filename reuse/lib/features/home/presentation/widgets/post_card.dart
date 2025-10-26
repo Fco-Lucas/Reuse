@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:reuse/core/enums/auth_user_role.dart';
 import 'package:reuse/features/home/data/models/responses/post_list_response_model.dart';
 
 class PostCard extends StatelessWidget {
@@ -7,6 +8,7 @@ class PostCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onLikePressed;
   final bool isLiked; // controla o estado visual do coração
+  final AuthUserRole authUserRole;
 
   const PostCard({
     super.key,
@@ -14,6 +16,7 @@ class PostCard extends StatelessWidget {
     required this.onTap,
     required this.onLikePressed,
     this.isLiked = false,
+    required this.authUserRole
   });
 
   @override
@@ -132,7 +135,7 @@ class PostCard extends StatelessWidget {
           ),
 
           // Ícone de coração flutuante
-          Positioned(
+          authUserRole == AuthUserRole.USER ? Positioned(
             top: 8,
             right: 8,
             child: InkWell(
@@ -160,7 +163,7 @@ class PostCard extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ) : Container()
         ],
       ),
     );

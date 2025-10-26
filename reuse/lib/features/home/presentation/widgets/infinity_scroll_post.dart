@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reuse/core/enums/auth_user_role.dart';
 import 'package:reuse/core/widgets/empty_state_widget.dart';
 import 'package:reuse/features/home/data/models/responses/post_list_response_model.dart';
 import 'package:reuse/features/home/presentation/widgets/post_card.dart';
@@ -10,6 +11,7 @@ class InfinityScrollPost extends StatelessWidget {
   final ScrollController scrollController;
   final List<PostListResponseModel> posts;
   final bool isLoadingMore;
+  final AuthUserRole authUserRole;
 
   const InfinityScrollPost({
     super.key,
@@ -19,6 +21,7 @@ class InfinityScrollPost extends StatelessWidget {
     required this.scrollController,
     required this.posts,
     required this.isLoadingMore,
+    required this.authUserRole
   });
 
   @override
@@ -53,6 +56,7 @@ class InfinityScrollPost extends StatelessWidget {
               onTap: () => onCardClick(post), 
               isLiked: post.liked, 
               onLikePressed: () => onLikePressed(post),
+              authUserRole: authUserRole,
             );
           },
         ),

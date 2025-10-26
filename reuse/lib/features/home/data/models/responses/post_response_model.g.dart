@@ -20,7 +20,7 @@ _PostResponseModel _$PostResponseModelFromJson(Map<String, dynamic> json) =>
       validUntil: DateTime.parse(json['validUntil'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
       address: json['address'] as String,
-      description: json['description'] as String,
+      description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
       status: $enumDecode(_$PostStatusEnumEnumMap, json['status']),
     );

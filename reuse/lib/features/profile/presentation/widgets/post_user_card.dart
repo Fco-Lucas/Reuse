@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:reuse/features/home/data/models/responses/post_user_list_response_model.dart'; // Assuming this has all necessary fields like description, address, etc.
+import 'package:reuse/features/home/data/models/responses/post_user_list_response_model.dart';
 
 class PostUserCard extends StatelessWidget {
   final PostUserListResponseModel post;
@@ -110,7 +110,7 @@ class PostUserCard extends StatelessWidget {
                       Expanded(
                         child: SingleChildScrollView(
                           child: Text(
-                            post.description,
+                            post.description ?? "",
                             style: const TextStyle(color: Colors.white, fontSize: 12),
                             textAlign: TextAlign.center,
                           ),

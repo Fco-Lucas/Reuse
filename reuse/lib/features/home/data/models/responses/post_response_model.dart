@@ -22,7 +22,7 @@ abstract class PostResponseModel with _$PostResponseModel {
     required DateTime validUntil,
     required DateTime createdAt,
     required String address,
-    required String description,
+    required String? description,
     required String? imageUrl,
     required PostStatusEnum status,
   }) = _PostResponseModel;

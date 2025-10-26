@@ -14,7 +14,7 @@ abstract class PostUserListResponseModel with _$PostUserListResponseModel {
     required String name, 
     required DateTime createdAt, 
     required String address, 
-    required String description, 
+    required String? description, 
     required String? imageUrl,
   }) = _PostUserListResponseModel;
 

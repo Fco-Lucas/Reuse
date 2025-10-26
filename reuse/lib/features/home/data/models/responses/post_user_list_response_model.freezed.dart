@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PostUserListResponseModel {
 
- int get id; String? get userId; String? get userName; String? get restaurantId; String? get restaurantName; String get name; DateTime get createdAt; String get address; String get description; String? get imageUrl;
+ int get id; String? get userId; String? get userName; String? get restaurantId; String? get restaurantName; String get name; DateTime get createdAt; String get address; String? get description; String? get imageUrl;
 /// Create a copy of PostUserListResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $PostUserListResponseModelCopyWith<$Res>  {
   factory $PostUserListResponseModelCopyWith(PostUserListResponseModel value, $Res Function(PostUserListResponseModel) _then) = _$PostUserListResponseModelCopyWithImpl;
 @useResult
 $Res call({
- int id, String? userId, String? userName, String? restaurantId, String? restaurantName, String name, DateTime createdAt, String address, String description, String? imageUrl
+ int id, String? userId, String? userName, String? restaurantId, String? restaurantName, String name, DateTime createdAt, String address, String? description, String? imageUrl
 });
 
 
@@ -65,7 +65,7 @@ class _$PostUserListResponseModelCopyWithImpl<$Res>
 
 /// Create a copy of PostUserListResponseModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = freezed,Object? userName = freezed,Object? restaurantId = freezed,Object? restaurantName = freezed,Object? name = null,Object? createdAt = null,Object? address = null,Object? description = null,Object? imageUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = freezed,Object? userName = freezed,Object? restaurantId = freezed,Object? restaurantName = freezed,Object? name = null,Object? createdAt = null,Object? address = null,Object? description = freezed,Object? imageUrl = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -75,8 +75,8 @@ as String?,restaurantName: freezed == restaurantName ? _self.restaurantName : re
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -162,7 +162,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  DateTime createdAt,  String address,  String description,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  DateTime createdAt,  String address,  String? description,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostUserListResponseModel() when $default != null:
 return $default(_that.id,_that.userId,_that.userName,_that.restaurantId,_that.restaurantName,_that.name,_that.createdAt,_that.address,_that.description,_that.imageUrl);case _:
@@ -183,7 +183,7 @@ return $default(_that.id,_that.userId,_that.userName,_that.restaurantId,_that.re
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  DateTime createdAt,  String address,  String description,  String? imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  DateTime createdAt,  String address,  String? description,  String? imageUrl)  $default,) {final _that = this;
 switch (_that) {
 case _PostUserListResponseModel():
 return $default(_that.id,_that.userId,_that.userName,_that.restaurantId,_that.restaurantName,_that.name,_that.createdAt,_that.address,_that.description,_that.imageUrl);case _:
@@ -203,7 +203,7 @@ return $default(_that.id,_that.userId,_that.userName,_that.restaurantId,_that.re
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  DateTime createdAt,  String address,  String description,  String? imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? userId,  String? userName,  String? restaurantId,  String? restaurantName,  String name,  DateTime createdAt,  String address,  String? description,  String? imageUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _PostUserListResponseModel() when $default != null:
 return $default(_that.id,_that.userId,_that.userName,_that.restaurantId,_that.restaurantName,_that.name,_that.createdAt,_that.address,_that.description,_that.imageUrl);case _:
@@ -229,7 +229,7 @@ class _PostUserListResponseModel implements PostUserListResponseModel {
 @override final  String name;
 @override final  DateTime createdAt;
 @override final  String address;
-@override final  String description;
+@override final  String? description;
 @override final  String? imageUrl;
 
 /// Create a copy of PostUserListResponseModel
@@ -265,7 +265,7 @@ abstract mixin class _$PostUserListResponseModelCopyWith<$Res> implements $PostU
   factory _$PostUserListResponseModelCopyWith(_PostUserListResponseModel value, $Res Function(_PostUserListResponseModel) _then) = __$PostUserListResponseModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String? userId, String? userName, String? restaurantId, String? restaurantName, String name, DateTime createdAt, String address, String description, String? imageUrl
+ int id, String? userId, String? userName, String? restaurantId, String? restaurantName, String name, DateTime createdAt, String address, String? description, String? imageUrl
 });
 
 
@@ -282,7 +282,7 @@ class __$PostUserListResponseModelCopyWithImpl<$Res>
 
 /// Create a copy of PostUserListResponseModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = freezed,Object? userName = freezed,Object? restaurantId = freezed,Object? restaurantName = freezed,Object? name = null,Object? createdAt = null,Object? address = null,Object? description = null,Object? imageUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = freezed,Object? userName = freezed,Object? restaurantId = freezed,Object? restaurantName = freezed,Object? name = null,Object? createdAt = null,Object? address = null,Object? description = freezed,Object? imageUrl = freezed,}) {
   return _then(_PostUserListResponseModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -292,8 +292,8 @@ as String?,restaurantName: freezed == restaurantName ? _self.restaurantName : re
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

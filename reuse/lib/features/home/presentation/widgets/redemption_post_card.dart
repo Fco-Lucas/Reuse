@@ -120,7 +120,7 @@ class RedemptionPostCard extends StatelessWidget {
                         ),
                 ),
                 const SizedBox(height: 10,),
-                Container(
+                post.description != null && post.description!.isNotEmpty ? Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -136,12 +136,12 @@ class RedemptionPostCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Text(
-                        post.description,
+                        post.description!,
                         style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ),
-                ),
+                ) : Container(),
                 const SizedBox(height: 10,),
                 authUserRole == AuthUserRole.USER ? ElevatedButton(
                   onPressed: onRedemption,

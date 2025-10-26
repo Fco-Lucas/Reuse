@@ -17,7 +17,7 @@ _PostUserListResponseModel _$PostUserListResponseModelFromJson(
   name: json['name'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
   address: json['address'] as String,
-  description: json['description'] as String,
+  description: json['description'] as String?,
   imageUrl: json['imageUrl'] as String?,
 );
 

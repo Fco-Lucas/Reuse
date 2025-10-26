@@ -11,7 +11,7 @@ class PostUserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final validLocal = post.createdAt.toLocal(); // Assuming you have createdAt
     final String formattedDate = DateFormat('dd/MM/yyyy').format(validLocal);
-    final String? imageUrl = post.imageUrl?.replaceAll('localhost', '10.0.2.2');
+    final imageUrl = post.imageUrl;
     final String ownerName = post.restaurantName ?? post.userName ?? "Desconhecido";
 
     return Card(
@@ -26,7 +26,7 @@ class PostUserCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: (imageUrl != null && imageUrl.isNotEmpty)
                     ? Image.network(
                         imageUrl,

@@ -27,7 +27,7 @@ class PostCard extends StatelessWidget {
     final validLocal = post.validUntil.toLocal();
     final String formattedDate = DateFormat('dd/MM').format(validLocal);
     final String formattedTime = DateFormat('HH:mm').format(validLocal);
-    final String? imageUrl = post.imageUrl?.replaceAll('localhost', '10.0.2.2');
+    final imageUrl = post.imageUrl;
 
     return Card(
       elevation: 4,
@@ -47,25 +47,25 @@ class PostCard extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: imageUrl != null && imageUrl.isNotEmpty
-                          ? Image.network(
-                              imageUrl,
-                              width: 100,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  width: 100,
+                      child: SizedBox(
+                        width: 100,
+                        child: AspectRatio(
+                          aspectRatio: 1, // ajusta conforme seu design
+                          child: imageUrl != null && imageUrl.isNotEmpty
+                              ? Image.network(
+                                  imageUrl,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) => Container(
+                                    color: Colors.grey.shade300,
+                                    child: const Icon(Icons.image_not_supported, color: Colors.grey),
+                                  ),
+                                )
+                              : Container(
                                   color: Colors.grey.shade300,
-                                  child: const Icon(Icons.image_not_supported,
-                                      color: Colors.grey),
-                                );
-                              },
-                            )
-                          : Container(
-                              width: 100,
-                              color: Colors.grey.shade300,
-                              child: const Icon(Icons.image, color: Colors.grey),
-                            ),
+                                  child: const Icon(Icons.image, color: Colors.grey),
+                                ),
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(

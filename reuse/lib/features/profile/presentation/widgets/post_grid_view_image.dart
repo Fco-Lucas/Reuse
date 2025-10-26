@@ -9,7 +9,7 @@ class PostGridViewImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? imageUrl = post.imageUrl?.replaceAll('localhost', '10.0.2.2');
+    final imageUrl = post.imageUrl;
 
     return AspectRatio(
       aspectRatio: 1 / 1,

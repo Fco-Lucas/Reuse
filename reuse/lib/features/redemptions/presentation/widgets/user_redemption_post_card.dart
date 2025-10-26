@@ -13,7 +13,7 @@ class UserRedemptionPostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String correctOwnerName = post.restaurantName != null ? post.restaurantName! : post.userName != null ? post.userName! : "";
-    final String? imageUrl = post.imageUrl?.replaceAll('localhost', '10.0.2.2');
+    final imageUrl = post.imageUrl;
     final validLocal = post.redemptionAt.toLocal();
     final String formattedRedemptionDate = DateFormat('dd/MM').format(validLocal);
 
@@ -28,25 +28,25 @@ class UserRedemptionPostCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: imageUrl != null && imageUrl.isNotEmpty
-                    ? Image.network(
-                        imageUrl,
-                        width: 100,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            width: 100,
+                child: SizedBox(
+                  width: 100,
+                  child: AspectRatio(
+                    aspectRatio: 1, // ajusta conforme seu design
+                    child: imageUrl != null && imageUrl.isNotEmpty
+                        ? Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: Colors.grey.shade300,
+                              child: const Icon(Icons.image_not_supported, color: Colors.grey),
+                            ),
+                          )
+                        : Container(
                             color: Colors.grey.shade300,
-                            child: const Icon(Icons.image_not_supported,
-                                color: Colors.grey),
-                          );
-                        },
-                      )
-                    : Container(
-                        width: 100,
-                        color: Colors.grey.shade300,
-                        child: const Icon(Icons.image, color: Colors.grey),
-                      ),
+                            child: const Icon(Icons.image, color: Colors.grey),
+                          ),
+                  ),
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(

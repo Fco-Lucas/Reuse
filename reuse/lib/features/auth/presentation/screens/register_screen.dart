@@ -38,44 +38,42 @@ class RegisterScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
       appBar: AppBar(),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                const Text(
-                  "Seja um Reaproveita+",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-                const Text(
-                  "Preencha as informações abaixo para criar sua conta",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 28),
-                RegisterForm(
-                  onRegister: onRegisterAttempt,
-                  isLoading: isLoading,
-                ),
-                const SizedBox(height: 150), // Espaço para a imagem do rodapé
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-              child: Image.asset(
-                'assets/images/bottom_navigation_bar_image.png',
-                height: 100,
-                fit: BoxFit.contain,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              const Text(
+                "Seja um Reaproveita+",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-            ),
+              const SizedBox(height: 5),
+              const Text(
+                "Preencha as informações abaixo para criar sua conta",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 28),
+              RegisterForm(
+                onRegister: onRegisterAttempt,
+                isLoading: isLoading,
+              ),
+              const SizedBox(height: 150), // Espaço para a imagem do rodapé
+            ],
           ),
-        ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        top: false, // garante que o teclado não empurre
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Image.asset(
+            'assets/images/bottom_navigation_bar_image.png',
+            height: 100,
+            fit: BoxFit.contain,
+          ),
+        ),
       ),
     );
   }

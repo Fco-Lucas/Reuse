@@ -41,7 +41,7 @@ class RedemptionPostCard extends StatelessWidget {
     }
 
     final String correctOwnerName = post.restaurantName != null ? post.restaurantName! : post.userName != null ? post.userName! : "";
-    final String? imageUrl = post.imageUrl?.replaceAll('localhost', '10.0.2.2');
+    final imageUrl = post.imageUrl;
 
     return Card(
       color: Colors.white,

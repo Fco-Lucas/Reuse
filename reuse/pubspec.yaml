@@ -1,0 +1,92 @@
+name: reuse
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  dio: ^5.9.0
+  flutter_riverpod: ^3.0.1
+  riverpod_annotation: ^3.0.1
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+  flutter_secure_storage: ^9.2.4
+  go_router: ^16.2.4
+  mask_text_input_formatter: ^2.9.0
+  flutter_dotenv: ^6.0.0
+  jwt_decoder: ^2.0.1
+  logger: ^2.6.2
+  intl: ^0.20.2
+  image_picker: ^1.2.0
+  mime: ^2.0.0
+
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  flutter_lints: ^5.0.0
+  build_runner: ^2.7.1
+  riverpod_generator: ^3.0.1
+  freezed: ^3.2.3
+  json_serializable: ^6.11.1
+  flutter_native_splash: ^2.4.6
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - .env.dev
+    - .env.prod
+    - assets/images/initial_screen_image.png
+    - assets/images/bottom_navigation_bar_image.png
+    - assets/images/app_icon.png
+    - assets/images/app_icon_name.png
+
+  fonts:
+    - family: Anton
+      fonts:
+        - asset: assets/fonts/Anton-Regular.ttf
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+
+flutter_launcher_icons:
+  # --- Configurações do Android ---
+  android: "launcher_icon"
+  image_path: "assets/images/app_icon.jpeg"
+  min_sdk_android: 21
+
+  # --- Configurações do iOS ---
+  ios: true
+  image_path_ios: "assets/images/app_icon.jpeg"
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#321606"
+  color_dark: "#321606"
+
+  image: assets/images/app_icon.png
+  image_dark: assets/images/app_icon.png
+
+  # Configurações específicas para Android 12+ que usa um ícone central
+  android_12:
+    image: assets/images/app_icon.png
+    icon_background_color: "#321606"
+    image_dark: assets/images/app_icon.png
+    icon_background_color_dark: "#321606"

@@ -1,0 +1,4 @@
+enum PostLikeStatusEnum {
+  ACTIVE,
+  INACTIVE
+}

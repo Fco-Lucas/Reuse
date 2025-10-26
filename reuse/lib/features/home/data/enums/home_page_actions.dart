@@ -1,0 +1,4 @@
+enum HomePageActions {
+  likePost,
+  unLikePost,
+}

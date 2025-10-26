@@ -1,0 +1,57 @@
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    name VARCHAR NOT NULL,
+    cpf VARCHAR(11),
+    password VARCHAR NOT NULL,
+    status VARCHAR(12) NOT NULL CHECK (status IN ('ACTIVE', 'INACTIVE')) DEFAULT 'ACTIVE'
+);
+
+CREATE TABLE IF NOT EXISTS restaurants (
+    id UUID PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    name VARCHAR NOT NULL,
+    cnpj VARCHAR(14),
+    password VARCHAR NOT NULL,
+    status VARCHAR(12) NOT NULL CHECK (status IN ('ACTIVE', 'INACTIVE')) DEFAULT 'ACTIVE'
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+    id BIGSERIAL PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    restaurant_id UUID REFERENCES restaurants(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    amount INTEGER NOT NULL,
+    amount_redemption INTEGER NOT NULL,
+    description TEXT,
+    address VARCHAR(255) NOT NULL,
+    valid_until TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    image_key VARCHAR(255),
+    status VARCHAR(12) NOT NULL CHECK (status IN ('ACTIVE', 'INACTIVE', 'FULL', 'EXPIRED'))
+    CHECK (
+        (user_id IS NOT NULL AND restaurant_id IS NULL)
+        OR (user_id IS NULL AND restaurant_id IS NOT NULL)
+    )
+);
+
+CREATE TABLE IF NOT EXISTS post_likes (
+    id BIGSERIAL PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    post_id BIGINT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(12) NOT NULL CHECK (status IN ('ACTIVE', 'INACTIVE')),
+    UNIQUE (user_id, post_id) -- garante que só pode curtir uma vez
+);
+
+CREATE TABLE IF NOT EXISTS post_redemptions (
+    id BIGSERIAL PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    post_id BIGINT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(12) NOT NULL CHECK (status IN ('RESERVED', 'CANCELLED', 'COMPLETED')) DEFAULT 'RESERVED'
+);
+-- Índice único apenas para status RESERVED ou COMPLETED
+CREATE UNIQUE INDEX unique_active_redemption_per_user_post
+ON post_redemptions (user_id, post_id)
+WHERE status IN ('RESERVED', 'COMPLETED');

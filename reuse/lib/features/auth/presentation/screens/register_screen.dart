@@ -1,0 +1,80 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:reuse/features/auth/presentation/controller/register_controller.dart';
+import 'package:reuse/features/auth/presentation/controller/register_state.dart';
+import 'package:reuse/features/auth/presentation/widgets/register_form.dart';
+
+class RegisterScreen extends ConsumerWidget {
+  const RegisterScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Ouve as MUDANÇAS de estado para ações pontuais como mostrar SnackBars.
+    ref.listen<RegisterState>(
+      registerControllerProvider, 
+      (previous, next) {
+        next.whenOrNull(
+          success: (message) => {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(message), backgroundColor: Colors.green),
+            ),
+            context.go("/login"),
+          },
+          error: (message) => ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message), backgroundColor: Colors.red),
+          ),
+        );
+      },
+    );
+
+    void onRegisterAttempt(String name, String login, String password) {
+      ref.read(registerControllerProvider.notifier).register(name, login, password);
+    }
+
+    final state = ref.watch(registerControllerProvider);
+    final isLoading = state.maybeMap(loading: (_) => true, orElse: () => false);
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+      appBar: AppBar(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              const Text(
+                "Seja um Reaproveita+",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 5),
+              const Text(
+                "Preencha as informações abaixo para criar sua conta",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 28),
+              RegisterForm(
+                onRegister: onRegisterAttempt,
+                isLoading: isLoading,
+              ),
+              const SizedBox(height: 150), // Espaço para a imagem do rodapé
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        top: false, // garante que o teclado não empurre
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Image.asset(
+            'assets/images/bottom_navigation_bar_image.png',
+            height: 100,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -60,6 +60,8 @@ docker compose --env-file .env.prod -f docker-compose.prod.yml up -d
 API: rodando na porta 8181
 Banco de dados (PostgreSQL): rodando na porta informada no arquivo .env.prod
 ```
+### Baixe o APK
+[Baixar APK](https://github.com/Fco-Lucas/Reuse/releases/tag/v1.0.0)
 
 ## ⚙️ Instalação manual (sem Docker)
 
@@ -89,9 +91,10 @@ spring.jpa.hibernate.ddl-auto=none
 # Rode a API
 cd api
 ./mvnw spring-boot:run
-
-# Baixe o APK
 ```
+
+### Baixe o APK
+[Baixar APK](https://github.com/Fco-Lucas/Reuse/releases/tag/v1.0.0)
 
 ## 🚀 Como Usar
 

@@ -5,11 +5,11 @@ Sistema de doações de alimentos e produtos entre restaurantes e pessoas, promo
 ## 📚 Índice
 - [Sobre o projeto](#-sobre-o-projeto)
 - [Tecnologias utilizadas](#-tecnologias-utilizadas)
-- [Instalação](#-instalação)
+- [Instalação com docker (recomendada)](#-instalação-com-docker-recomendada)
+- [Instalação manual](#-instalação-manual-sem-docker)
 - [Como usar](#-como-usar)
-- [Estrutura do projeto](#-estrutura-do-projeto)
 - [Contribuição](#-contribuição)
-- [Licença](#-licença)
+- [Contato](#-contato)
 
 ## 📖 Sobre o Projeto
 
@@ -37,26 +37,57 @@ O sistema conta com:
 - Git + GitHub
 - Docker & Docker Compose
 
-## ⚙️ Instalação
+## 🐳 Instalação com Docker (recomendada)
+
+### Passos
+
+```bash
+# Clone o projeto
+git clone https://github.com/Fco-Lucas/Reuse.git
+cd reuse/docker
+
+# Crie o arquivo .env.prod
+cp .env.example .env.prod
+
+# Substitua o valor das variáveis no arquivo .env.prod
+nano .env.prod
+
+# Suba os containers
+docker compose --env-file .env.prod -f docker-compose.prod.yml up -d
+
+# Verifique se está tudo funcionando
+
+API: rodando na porta 8181
+Banco de dados (PostgreSQL): rodando na porta informada no arquivo .env.prod
+```
+
+## ⚙️ Instalação manual (sem Docker)
 
 ### Pré-requisitos
 - [Java 21+](https://adoptium.net/)
-- [Docker](https://www.docker.com/)
+- [Maven](https://maven.apache.org/)
 - [PostgreSQL 17+](https://www.postgresql.org/)
 
 ### Passos
 
 ```bash
+# Crie um banco postgreSQL 17
+CREATE DATABASE reuse;
+
 # Clone o repositório
-git clone https://github.com/lucasmaia/reuseplus.git
+git clone https://github.com/Fco-Lucas/Reuse.git
+cd reuse
 
-# Acesse o back-end
-cd back-end
+# Configure o application.properties do Spring Boot
+## Arquivo encontrado em reuse/api/src/main/resources
+### O arquivo a ser editado é exclusivamente o application.properties e não application-dev.properties ou application-prod.properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/reuse
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+spring.jpa.hibernate.ddl-auto=none
 
-# Suba o banco via Docker
-docker compose up -d
-
-# Rode o back-end
+# Rode a API
+cd api
 ./mvnw spring-boot:run
 
 # Baixe o APK
@@ -64,8 +95,7 @@ docker compose up -d
 
 ## 🚀 Como Usar
 
-Acesse o front-end em: http://localhost:4200  
-A API estará disponível em: http://localhost:8080/api  
+A API estará disponível na porta 8181  
 
 Crie uma conta e faça login para acessar as funções de doador ou receptor.
 

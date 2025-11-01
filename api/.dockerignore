@@ -1,0 +1,29 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Maven
+target/
+.mvn/
+
+# Logs
+*.log
+
+# Docker
+docker/
+Dockerfile
+.dockerignore
+
+# Env files
+.env*
+
+# Uploads
+uploads/
+
+# Tests
+src/test/

@@ -1,0 +1,40 @@
+# DESENVOLVIMENTO: Apenas PostgreSQL dockerizado
+# API roda localmente via IntelliJ ou mvn spring-boot:run
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: reuseplus_postgres_dev
+    restart: always
+    
+    env_file:
+      - .env.dev
+    
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: America/Fortaleza
+    
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    
+    networks:
+      - reuseplus_network
+    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data_dev:
+    driver: local
+
+networks:
+  reuseplus_network:
+    driver: bridge

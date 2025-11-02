@@ -7,7 +7,7 @@ import 'package:reuse/core/theme/app_theme.dart';
 import 'package:reuse/core/theme/theme_provider.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env.dev");
+  await dotenv.load(fileName: ".env.prod");
   runApp(const ProviderScope(child: MyApp()));
 }
 

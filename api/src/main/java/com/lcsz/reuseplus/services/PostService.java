@@ -19,6 +19,7 @@ import com.lcsz.reuseplus.repositorys.PostRepository;
 import com.lcsz.reuseplus.repositorys.projections.PostProjection;
 import com.lcsz.reuseplus.repositorys.projections.PostRedemptionProjection;
 import com.lcsz.reuseplus.security.AuthenticatedUserProvider;
+import com.lcsz.reuseplus.utils.Compressor;
 import com.lcsz.reuseplus.utils.PostUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -44,8 +46,9 @@ public class PostService {
     private final PostLikeService postLikeService;
     private final PostRedemptionService postRedemptionService;
     private final AppProperties appProperties;
+    private final Compressor compressor;
 
-    public PostService(PostRepository repository, AuthenticatedUserProvider authUserProvider, UserService userService, RestaurantService restaurantService, PostLikeService postLikeService, PostRedemptionService postRedemptionService, AppProperties appProperties) {
+    public PostService(PostRepository repository, AuthenticatedUserProvider authUserProvider, UserService userService, RestaurantService restaurantService, PostLikeService postLikeService, PostRedemptionService postRedemptionService, AppProperties appProperties, Compressor compressor) {
         this.repository = repository;
         this.authUserProvider = authUserProvider;
         this.userService = userService;
@@ -53,6 +56,7 @@ public class PostService {
         this.postLikeService = postLikeService;
         this.postRedemptionService = postRedemptionService;
         this.appProperties = appProperties;
+        this.compressor = compressor;
     }
 
     // Retorna a entidade caso o usuário tenha curtido o POST
@@ -93,11 +97,24 @@ public class PostService {
             Path postDir = rootLocation.resolve(postId.toString());
             Files.createDirectories(postDir);
 
+            // Força permissão 777 para a pasta (ignora umask do sistema)
+            if (Files.getFileStore(postDir).supportsFileAttributeView("posix")) {
+                Files.setPosixFilePermissions(postDir, PosixFilePermissions.fromString("rwxrwxrwx"));
+            }
+
             // Caminho final do arquivo
             Path destinationFile = postDir.resolve(filename);
 
             // Copia o arquivo
             Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
+
+            // Força permissão 777 (ignora umask do sistema)
+            if (Files.getFileStore(postDir).supportsFileAttributeView("posix")) {
+                Files.setPosixFilePermissions(destinationFile, PosixFilePermissions.fromString("rwxrwxrwx"));
+            }
+
+            // Comprime a imagem salva
+            compressor.comprimirImagem(destinationFile.toFile());
 
             // Retorna caminho relativo (pra salvar no banco)
             return postId + "/" + filename;
